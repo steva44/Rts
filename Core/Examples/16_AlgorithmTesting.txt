@@ -1,0 +1,4 @@
+RAlgorithmTesterModel |ObjectName: theTester |OutputLevel: Medium |LinearSolver: theInverseSolver
+RCholeskyLinearSolver |ObjectName: theCholeskySolver |OutputLevel: Medium |CholeskyDecomposition: theCholeskyDecomposition
+RMatrixInverseLinearSolver |ObjectName: theInverseSolver |OutputLevel: Medium
+RBasicCholeskyDecomposition |ObjectName: theCholeskyDecomposition |OutputLevel: Medium

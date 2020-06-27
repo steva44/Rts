@@ -1,0 +1,23 @@
+
+// This file is part of Rts, the software framework developed in the research group of 
+// Professor Terje Haukaas at the University of British Columbia in Vancouver, Canada
+// Web: terje.civil.ubc.ca  Email: terje@civil.ubc.ca
+
+
+
+// RANDOM VARIABLES
+RContinuousRandomVariable |ObjectName: RV1  |DistributionType: Lognormal (zeta, sigma) |Mean: 500  |StandardDeviation: 100
+RContinuousRandomVariable |ObjectName: RV2  |DistributionType: Lognormal (zeta, sigma) |Mean: 2000 |StandardDeviation: 400 
+RContinuousRandomVariable |ObjectName: RV3  |DistributionType: Uniform (a, b)          |Mean: 5    |StandardDeviation: 0.5  
+
+
+// CORRELATION
+RCorrelation |ObjectName: rho12 |RandomVariable1: RV1 |RandomVariable2: RV2 |Coefficient: 0.3
+RCorrelation |ObjectName: rho13 |RandomVariable1: RV1 |RandomVariable2: RV3 |Coefficient: 0.2
+RCorrelation |ObjectName: rho23 |RandomVariable1: RV2 |RandomVariable2: RV3 |Coefficient: 0.2
+
+
+// LIMIT-STATE FUNCTION
+RAlgebraicExpressionModel |ObjectName: theFunction  |Expression: RV2/(1000.0*RV3) + (RV1/(200.0*RV3))^2
+
+

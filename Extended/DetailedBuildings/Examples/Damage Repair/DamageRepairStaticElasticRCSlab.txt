@@ -1,0 +1,116 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//															//
+//															//
+//	Damage and repair example for static elastic reinforced concrete floor slab					//
+//															//
+//															//
+//  	Stevan Gavrilovic, University of British Columbia								//
+//															//
+//  	All units in N, m, kg, Pa											//
+//															//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//**** Integrator ****
+
+// The DeltaLambda parameter can be used along with the MaxSteps parameter in the structural analysis method to apply a fraction of the total load to the structure
+// The load is applied incrementally by adding DeltaLambda*Load at every step
+// The fraction of the total load applied at the end of the analysis will be DeltaLambda*NumberIncrements
+// For example, if you want the final load to be 0.6 of the total load, set DeltaLambda:0.1 and NumberIncrements:6
+RLoadControlIntegrator |ObjectName: theIntegrator |DeltaLambda: 1.0 |NumberIncrements: 1 |MinLambda: 1.0 |Maxlambda: 1.0
+
+
+//**** Constraint Handler ****
+
+RTransformationConstraintHandler |ObjectName: theConstraintHandler
+
+
+//**** DOF Numberer ****
+
+RDOFNumberer |ObjectName: theDOFNumberer |NumberingScheme: RCM
+
+
+//**** Convergence Test ****
+
+RCTestNormDispIncr |ObjectName: theConvergenceTest |Tolerance: 1.0e-6 |MaxNumberIncrements: 250
+
+
+//**** Solver ****
+
+RMumpsParallelSOE |ObjectName: theSolver
+
+
+//**** Equation Solution Algorithm ****
+
+RKrylovNewtonEquationSolutionAlgorithm |ObjectName: theSolutionAlgo |ConvergenceTest: theConvergenceTest
+
+
+//**** Building Information ****
+
+// The time of construction (start time) and the time of demolition (end time)
+RTime |ObjectName: startTime |Time: 2017-01-01 17:00:00.000
+RTime |ObjectName: endTime |Time: 2067-01-01 17:00:00.000
+
+RLocation |ObjectName: buildingLocation |Latitude: 49.295448 |Longitude: -123.265801 
+
+RBIM |ObjectName: theBIM |Location: buildingLocation |TimeOfConstruction: startTime |TimeOfDemolition: endTime 
+
+
+//**** Hazards and Loading [N] ****
+
+RContinuousRandomVariable |ObjectName: pointLoadParameter |DistributionType: Normal (mean, stdv) |Mean: -20000000 |StandardDeviation: 100
+RPointLoad |ObjectName: pointLoad |InputParameter: pointLoadParameter
+
+RLinearSeries |ObjectName: thePseudoTimeSeries 
+RLoadPattern |ObjectName: theLoadPattern |TimeSeries: thePseudoTimeSeries
+
+
+//**** Boundary Conditions ****
+
+RPoint |ObjectName: pointA |XCoordinate: 0 |YCoordinate: -1 |ZCoordinate: 2 
+RPoint |ObjectName: pointB |XCoordinate: 0 |YCoordinate: 5 |ZCoordinate: 2 
+RPoint |ObjectName: pointC |XCoordinate: 0 |YCoordinate: 5 |ZCoordinate: 4 
+RPoint |ObjectName: pointD |XCoordinate: 0 |YCoordinate: -1 |ZCoordinate: 4 
+
+RFixedPlaneBoundaryCondition |ObjectName: ground |Point1: pointA |Point2: pointB |Point3: pointC |Point4: pointD
+
+
+//**** Component Geometry [m] ****
+
+RConstant |ObjectName: slabWidth |CurrentValue: 3
+RConstant |ObjectName: slabLength |CurrentValue: 9.0 
+RConstant |ObjectName: slabThickness |CurrentValue: 0.2
+
+RPoint |ObjectName: horzPoint1 |XCoordinate: 0 |YCoordinate: 0 |ZCoordinate: 3 
+RPoint |ObjectName: horzPoint2 |XCoordinate: slabLength |YCoordinate: 0 |ZCoordinate: 3    
+RPoint |ObjectName: horzPoint3 |XCoordinate: slabLength |YCoordinate: slabWidth |ZCoordinate: 3 |YForce: pointLoad
+RPoint |ObjectName: horzPoint4 |XCoordinate: 0 |YCoordinate: slabWidth |ZCoordinate: 3  
+
+
+//**** Components ****
+
+RRCSlabComponent |ObjectName: cantileverslab |Point1: horzPoint1 |Point2: horzPoint2 |Point3: horzPoint3 |Point4: horzPoint4 |Thickness: slabThickness |MeshOption: 1
+
+
+//**** Structural Analysis Method ****
+
+RLinearStaticStructuralAnalysis	|ObjectName: theStructuralAnalysisType |OutputLevel: Maximum |ConstraintHandler: theConstraintHandler |DOFNumberer: theDOFNumberer |LinearSOESolver: theSolver |Integrator: theIntegrator |VisualDamageModel: theVisualDamageModel
+
+
+//*************************************************************************************
+//********************************** ORCHESTRATING MODELS *****************************
+//*************************************************************************************
+
+
+// Structural Analysis Model
+RStructuralAnalysisModel |ObjectName: theSAModel |StructuralAnalysis: theStructuralAnalysisType |LoadPattern: theLoadPattern 
+
+
+// Visual Damage Model
+RVisualDamageModel |ObjectName: theVisualDamageModel |InputParameter: theSAModelResponse
+
+
+// Repair Impact Model
+RStevesRepairImpactModel |ObjectName: repairImpactModel |BIM: theBIM |InputParameter: theSAModelResponse
+
+

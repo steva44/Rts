@@ -1,0 +1,31 @@
+
+// This file is part of Rts, the software framework developed in the research group of 
+// Professor Terje Haukaas at the University of British Columbia in Vancouver, Canada
+// Web: terje.civil.ubc.ca  Email: terje@civil.ubc.ca
+
+
+
+
+// RANDOM VARIABLES
+RContinuousRandomVariable |ObjectName: x1 |CurrentValue: 500 |DistributionType: Lognormal (zeta, sigma) |Mean: 500 |StandardDeviation: 100
+RContinuousRandomVariable |ObjectName: x2 |CurrentValue: 2000 |DistributionType: Lognormal (zeta, sigma) |Mean: 2000 |StandardDeviation: 400
+RContinuousRandomVariable |ObjectName: x3 |CurrentValue: 5 |DistributionType: Uniform (a, b) |Mean: 5 |StandardDeviation: 0.5
+
+
+// CORRELATION
+RCorrelation |ObjectName: rho12 |RandomVariable1: x1 |RandomVariable2: x2 |Coefficient: 0.3
+RCorrelation |ObjectName: rho13 |RandomVariable1: x1 |RandomVariable2: x3 |Coefficient: 0.2
+RCorrelation |ObjectName: rho23 |RandomVariable1: x2 |RandomVariable2: x3 |Coefficient: 0.2
+
+
+// MODEL
+RScriptModel |ObjectName: myScriptModel |OutputLevel: Maximum |InputParameterList: x1; x2; x3  |ScriptFile: JavaScript.js |DDM: false
+
+
+// RESPONSES
+RGenericResponse |ObjectName: u1 |CurrentValue: 0 |Model: myScriptModel
+RGenericResponse |ObjectName: u2 |CurrentValue: 0 |Model: myScriptModel
+
+
+// LIMIT-STATE FUNCTION
+RAlgebraicExpressionModel |ObjectName: theFunction  |Expression: u1 + u2

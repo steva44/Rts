@@ -1,0 +1,79 @@
+
+
+// CREATE THE OFFICIAL INTERNAL TIME HERE IF WE WANT TO GIVE IT A SPECIFIC VALUE
+// RTime |ObjectName: officialCurrentTime |Time: 2017-05-28 17:00:00.000
+
+
+// SET OVERALL MODEL GRANULARITY
+RConstant |ObjectName: officialMeshOption |CurrentValue: 3 
+
+
+// TIME PERIOD CONSIDERED
+RTime |ObjectName: startTime |Time: 2017-01-01 17:00:00.000
+RTime |ObjectName: endTime   |Time: 2067-01-01 17:00:00.000
+
+
+// EARTHQUAKE OCCURRENCE 
+RTime |ObjectName: earthquakeOccurrenceTime |Time: 2047-05-28 17:00:00.000
+RFixedTimeOccurrenceModel |ObjectName: earthquakeOccurrenceModel |OccurrenceTime: earthquakeOccurrenceTime
+//RPoissonPointProcessOccurrenceModel |ObjectName: earthquakeOccurrenceModel |StartTime: startTime |EndTime: endTime |ReturnPeriodInYears: 300
+
+
+// EARTHQUAKE LOCATION 
+RLocation | ObjectName: sourceCorner1  |Latitude: 49.295448 |Longitude: -123.265801
+RLocation | ObjectName: sourceCorner2  |Latitude: 49.125079 |Longitude: -123.265801
+RLocation | ObjectName: sourceCorner3  |Latitude: 49.288769 |Longitude: -122.811470
+RLocation | ObjectName: sourceCorner4  |Latitude: 49.119271 |Longitude: -122.811470
+RConstant |ObjectName: earthquakeDepth |CurrentValue: 0
+RPolygonalAreaSourceModel |ObjectName: earthquakeLocationModel |BoundaryLocationList:  sourceCorner1 ; sourceCorner2 ; sourceCorner3 ; sourceCorner4 ; |Depth: earthquakeDepth
+
+
+// EARTHQUAKE MAGNITUDE
+RConstant |ObjectName: minMagnitude |CurrentValue: 5.0
+RConstant |ObjectName: maxMagnitude |CurrentValue: 8.0
+RContinuousRandomVariable |ObjectName: earthquakeBeta |DistributionType: Lognormal (zeta, sigma) |Mean: 1.015 |StandardDeviation: 0.37760
+RBoundedExponentialMagnitudeModel |ObjectName: earthquakeMagnitudeModel |MinimumMagnitude: minMagnitude |MaximumMagnitude: maxMagnitude |Beta: earthquakeBeta |Occurrence: earthquakeOccurrenceModelResponse
+
+
+// EARTHQUAKE INTENSITY
+RBooreAtkinson2008IntensityModel |ObjectName: earthquakeIntensityModel |MagnitudeList: earthquakeMagnitudeModelResponse; |HypocentreList: earthquakeLocationModelResponse; |FaultType: Unspecified |LinearSolver: theLinearSolver
+
+
+// SNOW STORM
+RPoissonPointProcessOccurrenceModel |ObjectName: snowStormOccurrenceModel |StartTime: startTime |EndTime: endTime |ReturnPeriodInYears: 10
+RContinuousRandomVariable |ObjectName: snowStormMagnitudeVariable |DistributionType: Lognormal (zeta, sigma) |Mean: 2.0  |StandardDeviation: 0.2
+RGivenMagnitudeModel   |ObjectName: snowStormMagnitudeModel |Magnitude: snowStormMagnitudeVariable |Occurrence: snowStormOccurrenceModelResponse
+RSimpleSnowLoadModel |ObjectName: snowIntensityModel |SnowStormMagnitude: snowStormMagnitudeModelResponse |OutputLevel: Maximum
+
+
+// BUILDING
+RLocation | ObjectName: buildingLocation  |Latitude: 49.295448 |Longitude: -123.265801 
+RBIM |ObjectName: theBIM |Location: buildingLocation |IfcFile: stevesSaloon.ifc |TimeOfConstruction: startTime  |TimeOfDemolition: endTime |LoadBearingSystem: MomentFrame |ConstructionMaterial: ReinforcedConcrete |NumberOfStoreys: 3 |FootprintArea: 691 |OccupancyType: Services |PlanIrregularity: true |VerticalIrregularity: false |SoftStorey: false |Opening: false |ShortColumn: false |Pounding: false |Retrofitted: false
+RDetailedBuildingModel |ObjectName: stevesSaloon |BIM: theBIM  |StructuralAnalysis: theStaticAnalysis |OutputLevel: Medium  |HazardList: snowIntensityModelResponse;  earthquakeIntensityModelResponse
+
+
+// METHODS
+//RGSLCholeskyLinearSolver             |ObjectName: theLinearSolver |OutputLevel: Minimum   
+RBasicCholeskyDecomposition            |ObjectName: theDecomposition 
+RCholeskyLinearSolver                  |ObjectName: theLinearSolver        |CholeskyDecomposition: theDecomposition
+RConnectivityTableAssembler            |ObjectName: theAssembler 
+RLinearStaticStructuralAnalysis        |ObjectName: theStaticAnalysis      |Assembler: theAssembler |LinearSolver: theLinearSolver 
+RHLRFSearchDirection                   |ObjectName: theFORMSearchDirection
+RFixedLineSearchAlgorithm              |ObjectName: theLineSearchAlgorithm |FixedResult: 1.0
+RADKZhangMeritFunction                 |ObjectName: theMeritFunction       |FactorC: 10.0
+RStandardFORMConvergenceCheck          |ObjectName: theConvergenceCheck    |Tolerance1: 0.001 |Tolerance2: 0.001
+RIndependenceProbabilityTransformation |ObjectName: theProbTransformation  |ProbabilityDistributions: theProbDist 
+RInHouseRandomNumberGenerator          |ObjectName: theGenerator
+RInHouseProbabilityDistributions       |ObjectName: theProbDist
+RDownhillSimplexOptimizationAlgorithm  |ObjectName: theOptimizationAlgorithm |OutputLevel: Maximum |Alpha: 1.0 |Gamma: 2 |Rho: -0.5 |Sigma: 0.5 |MaxSteps: 50 |Tolerance: 0.001 |Delay: 0.0
+
+
+// ORCHESTRATING ANALYSIS MODELS
+RScenarioModel |ObjectName: scenarioModel |InputParameterList: stevesSaloonResponse |StartTime: startTime |EndTime: endTime |MaxTimeGap: 365 |RealInterestRate: 0.05 |OutputLevel: Medium
+
+RSamplingModel |ObjectName: theSamplingModel |OutputLevel: Medium  |InputParameter: scenarioModelResponse |Threshold: 0.0 |ProbabilityTransformation: theProbTransformation |TargetCov: 0.0000002 |MaxSamples: 101 |PlotInterval: 10 |RandomNumberGenerator: theGenerator
+
+ROptimizationModel |ObjectName: myOptModel |OutputLevel: Maximum |Objective: theSamplingModelMeanResponse |OptimizationAlgorithm: theOptimizationAlgorithm
+
+
+

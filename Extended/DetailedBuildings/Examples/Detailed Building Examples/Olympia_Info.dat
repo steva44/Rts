@@ -1,0 +1,3 @@
+station = Olympia Hwy Test Lab; component= 356, 086, vert; Source= Subcrustal; Database Number=802; Scale Factor=1.695706; Magnitude=7.1; Epicentral Distance (km)=39.00; Closest Distance (km)=33.99; timesteps=17833; time interval=0.00500; units=g
+
+For the Decimated or 'Decim' versions, the time series has been decimated to a time interval of 0.02 instead of 0.05

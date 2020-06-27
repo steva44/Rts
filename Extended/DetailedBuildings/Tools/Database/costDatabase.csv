@@ -1,0 +1,164 @@
+CSICode,Eco,Notes,Description,Unit,Crew,Daily Output,Labor Hours,Bare Material,Bare Labor,Bare Equipment,Bare Total,Total O&P,Hourly Oper. Cost,Rent Per Day,Rent Per Week,Rent Per Month,COV
+015419600100,,,"Crane crew, tower crane, static, 130' high, 106' jib, 6200 lb. capacity, monthly use, excludes concrete footing",Month,A3N,0.05,176.000,,6755.50,36998.00,43753.50,51781.40,,,,,0.3
+015423706110,,,"Scaffolding, steel tubular, heavy duty shoring for elevated slab forms, floor area, rent/month of materials only, to 8'-2"" high",C.S.F.,,0.00,,49.62,,,49.62,54.82,,,,,0.3
+015423706610,,,"Scaffolding, steel tubular, heavy duty shoring for elevated slab forms, floor area, rent/month of materials only, to 14'-8"" high",C.S.F.,,0.00,,72.70,,,72.70,80.20,,,,,0.3
+024116130020,,,"Building demolition, large urban projects, steel, includes 20 mile haul, excludes foundation demolition, dump fees",C.F.,B8,21500.00,0.003,,0.12,0.20,0.32,0.41,,,,,0.3
+024116130050,,,"Building demolition, large urban projects, concrete, includes 20 mile haul, excludes foundation demolition, dump fees",C.F.,B8,15300.00,0.004,,0.17,0.27,0.44,0.57,,,,,0.3
+024116130700,,,"Building demolition, small buildings or single buildings, wood, elevated slabs, includes 20 mile haul, excludes salvage, foundation demolition or dump fees",C.F.,B3,14800.00,0.003,,0.20,0.23,0.43,0.53,,,,,0.3
+024119160020,,,"Selective demolition, cutout, concrete elevated slab, light reinforcing, under 6 C.F., excludes loading and disposal",C.F.,B9,65.00,0.615,,33.35,5.14,38.49,56.02,,,,,0.3
+024119160050,,,"Selective demolition, cutout, concrete elevated slab, light reinforcing, over 6 C.F., excludes loading and disposal",C.F.,B9,75.00,0.533,,28.78,4.45,33.23,48.73,,,,,0.3
+024119161000,,,"Selective demolition, cutout, concrete, elevated slab, bar reinforced, under 6 C.F., excludes loading and disposal",C.F.,B9,45.00,0.889,,35.97,7.40,43.37,67.04,,,,,0.3
+024119161050,,,"Selective demolition, cutout, concrete, elevated slab, bar reinforced, over 6 C.F., excludes loading and disposal",C.F.,B9,50.00,0.800,,32.05,6.69,38.74,60.30,,,,,0.3
+024119161400,,,"Selective demolition, cutout, concrete, walls, bar reinforced, under 6 C.F., excludes loading and disposal",C.F.,B9,50.00,0.800,,32.05,6.69,38.74,60.30,,,,,0.3
+024119161450,,,"Selective demolition, cutout, concrete, walls, bar reinforced, 6-12 C.F., excludes loading and disposal",C.F.,B9,70.00,0.571,,22.96,4.77,27.73,43.18,,,,,0.3
+024119180200,,,"Selective demolition, disposal only, urban buildings with salvage value allowed, steel frame, includes loading and 5 mile haul to dump",C.Y.,B3,430.00,0.112,,6.67,7.76,14.43,18.61,,,,,0.3
+024119180300,,,"Selective demolition, disposal only, urban buildings with salvage value allowed, concrete frame, includes loading and 5 mile haul to dump",C.Y.,B3,365.00,0.132,,5.83,9.11,14.94,19.64,,,,,0.3
+024119180500,,,"Selective demolition, disposal only, urban buildings with salvage value allowed, wood frame, includes loading and 5 mile haul to dump",C.Y.,B3,247.00,0.194,,11.64,13.45,25.09,32.33,,,,,0.3
+024119192000,,,"Selective demolition, rubbish handling, 0'-50' haul, load, haul, dump and return, hand carried, cost to be added to demolition cost",C.Y.,2 Clab,24.00,0.667,,26.16,,26.16,43.82,,,,,0.3
+024119271040,,,"Selective demolition, torch cutting, steel, reinforced concrete walls, 12""-16"" thick, oxygen lance cutting",L.F.,1 Clab,10.00,0.800,,32.05,,32.05,52.32,,,,,0.3
+030505100050,,,"Selective concrete demolition, reinforcing less than 1% of cross-sectional area, break up into small pieces, excludes shoring, bracing, saw or torch cutting, loading, hauling, dumping",C.Y.,B9,24.00,1.667,,48.41,13.95,62.36,94.73,,,,,0.3
+030505100060,,,"Selective concrete demolition, reinforcing 1% - 2% of cross-sectional area, break up into small pieces, excludes shoring, bracing, saw or torch cutting, loading, hauling, dumping",C.Y.,B9,16.00,2.500,,72.38,20.92,93.30,142.36,,,,,0.3
+030505100070,,,"Selective concrete demolition, reinforcing more than 2% cross-sectional area, break up into small pieces, excludes shoring, bracing, saw or torch cutting, loading, hauling, dumping",C.Y.,B9,8.00,5.000,,144.76,41.98,186.74,285.01,,,,,0.3
+031113255000,,,"C.I.P. concrete forms, column, square, plywood, 8"" x 8"", 1 use, includes erecting, bracing, stripping and cleaning",SFCA,C1,165.00,0.194,3.34,6.17,,9.51,13.88,,,,,0.3
+031113255500,,,"C.I.P. concrete forms, column, square, plywood, 12"" x 12"", 1 use, includes erecting, bracing, stripping and cleaning",SFCA,C1,180.00,0.178,3.21,5.66,,8.87,12.90,,,,,0.3
+031113256000,,,"C.I.P. concrete forms, column, square, plywood, 16"" x 16"", 1 use, includes erecting, bracing, stripping and cleaning",SFCA,C1,185.00,0.173,3.21,5.48,,8.69,12.63,,,,,0.3
+031113256500,,,"C.I.P. concrete forms, column, square, plywood, 24"" x 24"", 1 use, includes erecting, bracing, stripping and cleaning",SFCA,C1,190.00,0.168,3.64,5.34,,8.98,12.87,,,,,0.3
+031113257000,,,"C.I.P. concrete forms, column, square, plywood, 36"" x 36"", 1 use, includes erecting, bracing, stripping and cleaning",SFCA,C1,200.00,0.160,2.71,5.06,,7.77,11.39,,,,,0.3
+031113351000,,,"C.I.P. concrete forms, elevated slab, flat plate, plywood, to 15' high, 1 use, includes shoring, erecting, bracing, stripping and cleaning",S.F.,C2,470.00,0.102,4.97,3.27,,8.24,10.90,,,,,0.3
+031113351500,,,"C.I.P. concrete forms, elevated slab, flat plate, plywood, 15' to 20' high ceilings, 4 use, includes shoring, erecting, bracing, stripping and cleaning",S.F.,C2,495.00,0.097,1.64,3.10,,4.74,6.95,,,,,0.3
+031113351600,,,"C.I.P. concrete forms, elevated slab, flat plate, plywood, 21' to 35' high ceilings, 4 use, includes shoring, erecting, bracing, stripping and cleaning",S.F.,C2,450.00,0.107,2.04,3.41,,5.45,7.90,,,,,0.3
+031113357000,,,"C.I.P. concrete forms, elevated slab, edge forms, to 6"" high, 4 use, includes shoring, erecting, bracing, stripping and cleaning",L.F.,C1,500.00,0.064,0.28,2.03,,2.31,3.68,,,,,0.3
+031113357070,,,"C.I.P. concrete forms, elevated slab, edge forms, 7"" to 12"" high, 1 use, includes shoring, erecting, bracing, stripping and cleaning",SFCA,C1,162.00,0.198,1.63,6.26,,7.89,12.17,,,,,0.3
+031113850100,,,"C.I.P. concrete forms, wall, box out for opening, to 16"" thick, to 10 S.F., includes erecting, bracing, stripping and cleaning",Ea.,C2,24.00,2.000,32.99,64.03,,97.02,141.84,,,,,0.3
+031113850150,,,"C.I.P. concrete forms, wall, box out for opening, to 16"" thick, over 10 S.F. (use perimeter), includes erecting, bracing, stripping and cleaning",L.F.,C2,280.00,0.171,2.84,5.48,,8.32,12.21,,,,,0.3
+031113852000,,,"C.I.P. concrete forms, wall, job built, plywood, to 8' high, 1 use, includes erecting, bracing, stripping and cleaning",SFCA,C2,370.00,0.130,3.40,4.15,,7.55,10.61,,,,,0.3
+031113852150,,,"C.I.P. concrete forms, wall, job built, plywood, to 8' high, 4 use, includes erecting, bracing, stripping and cleaning",SFCA,C2,505.00,0.095,1.28,3.03,,4.31,6.47,,,,,0.3
+031113852400,,,"C.I.P. concrete forms, wall, job built, plywood, over 8' to 16' high, 1 use, includes erecting, bracing, stripping and cleaning",SFCA,C2,280.00,0.171,3.76,5.48,,9.24,13.23,,,,,0.3
+031113852550,,,"C.I.P. concrete forms, wall, job built, plywood, over 8' to 16' high, 4 use, includes erecting, bracing, stripping and cleaning",SFCA,C2,395.00,0.122,0.97,3.88,,4.85,7.51,,,,,0.3
+031113852700,,,"C.I.P. concrete forms, wall, job built, plywood, over 16' high, 1 use, includes erecting, bracing, stripping and cleaning",SFCA,C2,235.00,0.204,3.36,6.54,,9.90,14.51,,,,,0.3
+031113852850,,,"C.I.P. concrete forms, wall, job built, plywood, over 16' high, 4 use, includes erecting, bracing, stripping and cleaning",SFCA,C2,330.00,0.145,1.09,4.64,,5.73,8.90,,,,,0.3
+031113857860,,,"C.I.P. concrete forms, walls, modular prefabricated plywood, to 8' high, includes erecting, bracing, stripping and cleaning",SFCA,C2,800.00,0.060,1.38,1.92,,3.30,4.71,,,,,0.3
+031113858060,,,"C.I.P. concrete forms, walls, modular prefabricated plywood, over 8' to 16' high, includes erecting, bracing, stripping and cleaning",SFCA,C2,600.00,0.080,1.45,2.55,,4.00,5.84,,,,,0.3
+031113859060,,,"C.I.P. concrete forms, walls, steel framed plywood, to 8' high, based on 50 uses of purchased forms, 4 uses of bracing lumber, includes erecting, bracing, stripping and cleaning",SFCA,C2,600.00,0.080,0.95,2.55,,3.50,5.29,,,,,0.3
+031113859260,,,"C.I.P. concrete forms, walls, steel framed plywood, over 8' to 16' high, based on 50 uses of purchased forms, 4 uses of bracing lumber, includes erecting, bracing, stripping and cleaning",SFCA,C2,450.00,0.107,0.95,3.41,,4.36,6.71,,,,,0.3
+031113859460,,,"C.I.P. concrete forms, walls, steel framed plywood, over 16' to 20' high, based on 50 uses of purchased forms, 4 uses of bracing lumber, includes erecting, bracing, stripping and cleaning",SFCA,C2,400.00,0.120,0.95,3.83,,4.78,7.41,,,,,0.3
+031113859475,,,"C.I.P. concrete forms, for elevated walls, add, includes erecting, bracing, stripping and cleaning",,,0.00,,,10.00%,,,,,,,,0.3
+031505705040,,,"Frame shoring system, frame, 12000# per leg, 2' wide x 6' high, steel, buy",Ea.,,0.00,,120.98,,,120.98,133.20,,,,,0.3
+031505705250,,,"Frame shoring system, X-brace, 12000# per leg, steel, buy",Ea.,,0.00,,20.90,,,20.90,22.97,,,,,0.3
+031505705550,,,"Frame shoring system, base plate, 12000# per leg, steel, buy",Ea.,,0.00,,18.51,,,18.51,20.35,,,,,0.3
+031505705600,,,"Frame shoring system, screw jack, 12000# per leg, steel, buy",Ea.,,0.00,,43.99,,,43.99,48.27,,,,,0.3
+031505705650,,,"Frame shoring system, U-head, 12000# per leg, 8"" x 8"", steel, buy",Ea.,,0.00,,23.10,,,23.10,25.66,,,,,0.3
+032105750100,,,"Splice rebar, standard, self-aligning type, taper threaded, #4 bars, includes holding rebar in place while splicing",Ea.,C25,190.00,0.168,9.13,5.18,,14.31,18.88,,,,,0.3
+032105750105,,,"Splice rebar, standard, self-aligning type, taper threaded, #5 bars, includes holding rebar in place while splicing",Ea.,C25,170.00,0.188,11.33,5.79,,17.12,22.40,,,,,0.3
+032105750120,,,"Splice rebar, standard, self-aligning type, taper threaded, #7 bars, includes holding rebar in place while splicing",Ea.,C25,130.00,0.246,14.76,7.57,,22.33,29.23,,,,,0.3
+032105750300,,,"Splice rebar, standard, self-aligning type, taper threaded, #8 bars, includes holding rebar in place while splicing",Ea.,C25,115.00,0.278,24.50,8.55,,33.05,41.57,,,,,0.3
+032105750310,,,"Splice rebar, standard, self-aligning type, taper threaded, #10 bars, includes holding rebar in place while splicing",Ea.,C5,95.00,0.505,31.85,17.79,8.68,58.32,73.94,,,,,0.3
+032105750320,,,"Splice rebar, standard, self-aligning type, taper threaded, #11 bars, includes holding rebar in place while splicing",Ea.,C5,85.00,0.565,33.69,20.08,9.75,63.52,80.79,,,,,0.3
+032105750330,,,"Splice rebar, standard, self-aligning type, taper threaded, #14 bars, includes holding rebar in place while splicing",Ea.,C5,65.00,0.738,44.10,26.15,12.74,82.99,105.37,,,,,0.3
+032105750340,,,"Splice rebar, standard, self-aligning type, taper threaded, #18 bars, includes holding rebar in place while splicing",Ea.,C5,45.00,1.067,67.38,37.83,18.43,123.64,155.82,,,,,0.3
+032111600200,,,"Reinforcing steel, in place, columns, #3 to #7, A615, grade 60, incl labor for accessories, excl material for accessories",Ton,4 Rodm,1.50,21.333,1255.63,807.91,,2063.54,2709.08,,,,,0.3
+032111600250,,,"Reinforcing steel, in place, columns, #8 to #18, A615, grade 60, incl labor for accessories, excl material for accessories",Ton,4 Rodm,2.30,13.913,1255.63,527.71,,1783.34,2251.42,,,,,0.3
+032111600300,,,"Reinforcing steel, in place, columns, spirals, 8"" to 15"" diameter, A615, grade 60, incl labor for accessories, excl material for accessories",Ton,4 Rodm,2.20,14.545,2051.88,551.06,,2602.94,3176.90,,,,,0.3
+032111600400,,,"Reinforcing steel, in place, elevated slabs, #4 to #7, A615, grade 60, incl labor for accessories, excl material for accessories",Ton,4 Rodm,2.90,11.034,1255.63,565.07,,1820.70,2232.74,,,,,0.3
+032111600700,,,"Reinforcing steel, in place, walls, #3 to #7, A615, grade 60, incl labor for accessories, excl material for accessories",Ton,4 Rodm,3.00,10.667,1255.63,406.29,,1661.92,2045.94,,,,,0.3
+032111600750,,,"Reinforcing steel, in place, walls, #8 to #18, A615, grade 60, incl labor for accessories, excl material for accessories",Ton,4 Rodm,4.00,8.000,1255.63,303.55,,1559.18,1877.82,,,,,0.3
+032111601000,,,"Reinforcing steel, in place, under 10 ton job, #3 to #7, add",,,,,25.00%,10.00%,,,,,,,,0.3
+032111601010,,,"Reinforcing steel, in place, under 10 ton job, #8 to #18, add",,,,,20.00%,10.00%,,,,,,,,0.3
+032111601050,,,"Reinforcing steel, in place, 10 to 50 ton job, #3 to #7, add",,,,,10.00%,,,,,,,,,0.3
+032111601060,,,"Reinforcing steel, in place, 10 to 50 ton job, #8 to #18, add",,,,,5.00%,,,,,,,,,0.3
+032111601100,,,"Reinforcing steel, in place, 60 to 100 ton job, #3 to #7, deduct",,,,,5.00%,,,,,,,,,0.3
+032111601110,,,"Reinforcing steel, in place, 60 to 100 ton job, #8 to #18, deduct",,,,,10.00%,,,,,,,,,0.3
+032111601150,,,"Reinforcing steel, in place, over 100 ton job, #3 to #7, deduct",,,,,10.00%,,,,,,,,,0.3
+032111601160,,,"Reinforcing steel, in place, over 100 ton job, #8 to #18, deduct",,,,,15.00%,,,,,,,,,0.3
+032111602000,,,"Reinforcing steel, unload and sort, add to base",Ton,C5,100.00,0.480,,16.91,8.25,25.16,37.13,,,,,0.3
+032211100500,,,4 x 4 - W1.4 x W1.4 (10 x 10) 31 lb./C.S.F.,C.S.F.,2 Rodm,31,0.516,29.4,26.62,,56.02,72.01,,,,,0.3
+033053403300,,,"Structural concrete, in place, elevated slab, floor fill, lightweight, 110 lb./C.F., 2-1/2"" thick, concrete (Portland cement Type I), placing and finishing, excl forms, reinforcing",S.F.,C8,2585.00,0.022,1.34,0.91,0.47,2.72,3.35,,,,,0.3
+033113250340,,,"Concrete, hand mix, for small quantities or remote areas, 4000 psi, using wheelbarrow, includes bagged pre-mixed dry ingredients (80-Lb bag = 0.6 C.F.) and water, excludes, forms, reinforcing, placing & finishing",C.F.,1 Clab,48.00,0.167,8.82,4.66,,13.48,17.41,,,,,0.3
+033113350020,,,"Structural concrete, ready mix, heavyweight, 2000 psi, includes local aggregate, sand, Portland cement (Type I) and water, delivered, excludes all additives and treatments",C.Y.,,0.00,,121.99,,,121.99,134.19,,,,,0.3
+033113350100,,,"Structural concrete, ready mix, heavyweight, 2500 psi, includes local aggregate, sand, Portland cement (Type I) and water, delivered, excludes all additives and treatments",C.Y.,,0.00,,125.32,,,125.32,138.63,,,,,0.3
+033113350150,,,"Structural concrete, ready mix, heavyweight, 3000 psi, includes local aggregate, sand, Portland cement (Type I) and water, delivered, excludes all additives and treatments",C.Y.,,0.00,,137.52,,,137.52,150.82,,,,,0.3
+033113350200,,,"Structural concrete, ready mix, heavyweight, 3500 psi, includes local aggregate, sand, Portland cement (Type I) and water, delivered, excludes all additives and treatments",C.Y.,,0.00,,138.63,,,138.63,151.93,,,,,0.3
+033113350300,,,"Structural concrete, ready mix, heavyweight, 4000 psi, includes local aggregate, sand, Portland cement (Type I) and water, delivered, excludes all additives and treatments",C.Y.,,0.00,,141.95,,,141.95,156.37,,,,,0.3
+033113350350,,,"Structural concrete, ready mix, heavyweight, 4500 psi, includes local aggregate, sand, Portland cement (Type I) and water, delivered, excludes all additives and treatments",C.Y.,,0.00,,146.39,,,146.39,160.81,,,,,0.3
+033113350400,,,"Structural concrete, ready mix, heavyweight, 5000 psi, includes local aggregate, sand, Portland cement (Type I) and water, delivered, excludes all additives and treatments",C.Y.,,0.00,,154.15,,,154.15,169.68,,,,,0.3
+033113350411,,,"Structural concrete, ready mix, heavyweight, 6000 psi, includes local aggregate, sand, Portland cement (Type I) and water, delivered, excludes all additives and treatments",C.Y.,,0.00,,158.59,,,158.59,174.11,,,,,0.3
+033113350412,,,"Structural concrete, ready mix, heavyweight, 8000 psi, includes local aggregate, sand, Portland cement (Type I) and water, delivered, excludes all additives and treatments",C.Y.,,0.00,,166.35,,,166.35,184.09,,,,,0.3
+033113350413,,,"Structural concrete, ready mix, heavyweight, 10000 psi, includes local aggregate, sand, Portland cement (Type I) and water, delivered, excludes all additives and treatments",C.Y.,,0.00,,175.22,,,175.22,192.97,,,,,0.3
+033113350414,,,"Structural concrete, ready mix, heavyweight, 12000 psi, includes local aggregate, sand, Portland cement (Type I) and water, delivered, excludes all additives and treatments",C.Y.,,0.00,,184.09,,,184.09,201.84,,,,,0.3
+033113700400,,,"Structural concrete, placing, column, square or round, pumped, 12"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C20,60.00,1.067,,32.31,21.27,53.58,76.48,,,,,0.3
+033113700450,,,"Structural concrete, placing, column, square or round, with crane and bucket, 12"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C7,40.00,1.800,,54.92,37.71,92.63,131.72,,,,,0.3
+033113700600,,,"Structural concrete, placing, column, square or round, pumped, 18"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C20,90.00,0.711,,21.69,14.16,35.85,51.12,,,,,0.3
+033113700650,,,"Structural concrete, placing, column, square or round, with crane and bucket, 18"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C7,55.00,1.309,,40.15,27.39,67.54,95.87,,,,,0.3
+033113700800,,,"Structural concrete, placing, column, square or round, pumped, 24"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C20,92.00,0.696,,21.23,13.87,35.10,49.91,,,,,0.3
+033113700850,,,"Structural concrete, placing, column, square or round, with crane and bucket, 24"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C7,70.00,1.029,,31.38,21.56,52.94,75.38,,,,,0.3
+033113701000,,,"Structural concrete, placing, column, square or round, pumped, 36"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C20,140.00,0.457,,13.80,9.11,22.91,32.64,,,,,0.3
+033113701050,,,"Structural concrete, placing, column, square or round, with crane and bucket, 36"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C7,100.00,0.720,,22.15,15.08,37.23,52.58,,,,,0.3
+033113701400,,,"Structural concrete, placing, elevated slab, pumped, less than 6"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C20,140.00,0.457,,13.80,9.11,22.91,32.64,,,,,0.3
+033113701450,,,"Structural concrete, placing, elevated slab, with crane and bucket, less than 6"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C7,95.00,0.758,,23.08,15.87,38.95,55.73,,,,,0.3
+033113701500,,,"Structural concrete, placing, elevated slab, pumped, 6"" to 10"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C20,160.00,0.400,,12.09,7.97,20.06,28.59,,,,,0.3
+033113701550,,,"Structural concrete, placing, elevated slab, with crane and bucket, 6"" to 10"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C7,110.00,0.655,,19.84,13.73,33.57,47.85,,,,,0.3
+033113701600,,,"Structural concrete, placing, elevated slab, pumped, over 10"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C20,180.00,0.356,,10.75,7.10,17.85,25.51,,,,,0.3
+033113701650,,,"Structural concrete, placing, elevated slab, with crane and bucket, over 10"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C7,130.00,0.554,,16.94,11.60,28.54,40.43,,,,,0.3
+033113703510,,,"Structural concrete, placing, high rise, with crane and bucket, more than 5 stories, includes leveling (strike off) & consolidation, excludes material, add per story",C.Y.,C7,2100.00,0.034,,1.05,0.71,1.76,2.53,,,,,0.3
+033113704900,,,"Structural concrete, placing, walls, direct chute, 8"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C6,90.00,0.533,,15.64,0.84,16.48,26.76,,,,,0.3
+033113704950,,,"Structural concrete, placing, walls, pumped, 8"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C20,100.00,0.640,,19.38,12.74,32.12,45.86,,,,,0.3
+033113705000,,,"Structural concrete, placing, walls, with crane and bucket, 8"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C7,80.00,0.900,,27.69,18.85,46.54,65.93,,,,,0.3
+033113705100,,,"Structural concrete, placing, walls, pumped, 12"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C20,110.00,0.582,,17.58,11.60,29.18,41.81,,,,,0.3
+033113705200,,,"Structural concrete, placing, walls, with crane and bucket, 12"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C7,90.00,0.800,,24.46,16.79,41.25,58.58,,,,,0.3
+033113705350,,,"Structural concrete, placing, walls, pumped, 15"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C20,120.00,0.533,,16.11,10.67,26.78,37.98,,,,,0.3
+033113705400,,,"Structural concrete, placing, walls, with crane and bucket, 15"" thick, includes leveling (strike off) & consolidation, excludes material",C.Y.,C7,95.00,0.758,,23.08,15.87,38.95,55.73,,,,,0.3
+033513300200,,,"Concrete finishing, fresh concrete flatwork, floors, basic finishing for unspecified flatwork, bull float, manual float & manual steel trowel, excl placing, striking off & consolidating",S.F.,C10,1265.00,0.019,,0.61,,0.61,1.00,,,,,0.3
+033513300250,,,"Concrete finishing, specified Random Access Floors ACI Classes 1, 2, 3 & 4, for Composite Overall Floor Flatness & Levelness to FF35/FL25, bull float, machine float & steel trowel (walk-behind), excl placing, striking off & consolidating",S.F.,C10C,1715.00,0.014,,0.45,0.03,0.48,0.77,,,,,0.3
+033529600050,,,"Concrete finishing, walls, burlap rub with grout, includes breaking ties and patching voids",S.F.,1 Cefi,450.00,0.018,0.04,0.61,,0.65,1.05,,,,,0.3
+033529600600,,,"Concrete finishing, walls, float finish, 1/16"" thick",S.F.,1 Cefi,300.00,0.027,0.43,0.91,,1.34,1.95,,,,,0.3
+033713300020,,,"Gunite, dry mix, applied in layers, 1"" thick, excludes reinforcing mesh",S.F.,C16,2000.00,0.028,0.44,0.88,0.27,1.59,2.23,,,,,0.3
+033713300900,,,"Gunite, preparation of old walls, excludes scaffolding, good condition",S.F.,C10,1000.00,0.024,,0.78,,0.78,1.26,,,,,0.3
+033913500100,,,"Curing, burlap, 10 oz., 4 uses assumed",C.S.F.,2 Clab,55.00,0.291,30.50,8.17,,38.67,47.30,,,,,0.3
+036305101535,,,"Chemical anchoring, for fastener 1"" diam x 8"" embedment, incl epoxy cartridge, excl layout, drilling & fastener",Ea.,2 Skwk,66.00,0.242,8.35,8.98,,17.33,24.16,,,,,0.3
+036423000000,,Steve best guess no info in RSMeans,"Concrete resurfacing, epoxy injection grouting",C.F.,,0.00,0.5,75,150,,1,1,,,,,0.3
+038113500500,,,"Concrete sawing, concrete slabs, rod reinforced, up to 3"" deep, includes blade cost, layout and set up time",L.F.,B89,800.00,0.020,0.19,0.66,0.81,1.66,2.21,,,,,0.3
+038113500520,,,"Concrete sawing, concrete, existing slab, rod reinforced, for each additional inch of depth over 3"", includes blade cost, layout and set up time",L.F.,B89,2400.00,0.007,0.06,0.22,0.27,0.55,0.75,,,,,0.3
+038116500820,,,"Concrete sawing, concrete walls, rod reinforcing, per inch of depth",L.F.,B89B,150.00,0.107,0.06,3.66,6.65,10.37,13.43,,,,,0.3
+038216100700,,,"Concrete impact drilling, for anchors, up to 4"" D, 1"" dia, in concrete or brick walls and floors, includes bit cost, layout and set up time, excl anchor",Ea.,1 Carp,40.00,0.200,0.18,7.29,,7.47,12.23,,,,,0.3
+050505100230,,,"Structural members, remove whole or cut up, up to 500 lb.",Ea.,E19,48.00,0.500,,30.75,25.76,56.51,76.39,,,,,0.3
+050505100240,,,1/4-2 tons,Ea.,E18,36.00,1.111,,69.88,34.15,104.03,147.83,,,,,0.3
+050505100250,,,2-5 tons,Ea.,E24,30.00,1.067,,66.52,27.61,94.13,135.12,,,,,0.3
+050505100260,,,5-10 tons,Ea.,E20,24.00,2.667,,165.46,78.27,243.73,346.58,,,,,0.3
+050505100270,,,10-15 tons,Ea.,E2,18.00,3.111,,193.41,134.47,327.88,450.97,,,,,0.3
+050505100500,,,"Steel roof decking, uncovered, bare",S.F.,B2,5000.00,0.008,,0.37,,0.37,0.56,,,,,0.3
+051223176800,,,"W Shape, A992 steel, 2 tier, W8 x 24",L.F.,E2,1080.00,0.052,40.25,3.16,2.23,45.64,51.69,,,,,0.3
+051223176850,,,"W Shape, A992 steel, 2 tier, W8 x 31",L.F.,E2,1080.00,0.052,51.75,3.16,2.23,57.14,64.34,,,,,0.3
+051223176900,,,"W Shape, A992 steel, 2 tier, W8 x 48",L.F.,E2,1032.00,0.054,80.50,3.30,2.35,86.15,96.31,,,,,0.3
+051223176950,,,"W Shape, A992 steel, 2 tier, W8 x 67",L.F.,E2,984.00,0.057,112.13,3.46,2.46,118.05,131.19,,,,,0.3
+051223177000,,,"W Shape, A992 steel, 2 tier, W10 x 45",L.F.,E2,1032.00,0.054,75.33,3.30,2.35,80.98,90.56,,,,,0.3
+051223177050,,,"W Shape, A992 steel, 2 tier, W10 x 68",L.F.,E2,984.00,0.057,113.85,3.46,2.46,119.77,133.49,,,,,0.3
+051223177100,,,"W Shape, A992 steel, 2 tier, W10 x 112",L.F.,E2,960.00,0.058,187.45,3.55,2.52,193.52,214.21,,,,,0.3
+051223177150,,,"W Shape, A992 steel, 2 tier, W12 x 50",L.F.,E2,1032.00,0.054,83.38,3.30,2.35,89.03,99.76,,,,,0.3
+051223177200,,,"W Shape, A992 steel, 2 tier, W12 x 87",L.F.,E2,984.00,0.057,144.90,3.46,2.46,150.82,167.99,,,,,0.3
+051223177250,,,"W Shape, A992 steel, 2 tier, W12 x 120",L.F.,E2,960.00,0.058,200.10,3.55,2.52,206.17,229.16,,,,,0.3
+051223177300,,,"W Shape, A992 steel, 2 tier, W12 x 190",L.F.,E2,912.00,0.061,317.40,3.74,2.65,323.79,359.53,,,,,0.3
+051223177350,,,"W Shape, A992 steel, 2 tier, W14 x 74",L.F.,E2,984.00,0.057,124.20,3.46,2.46,130.12,143.84,,,,,0.3
+051223177400,,,"W Shape, A992 steel, 2 tier, W14 x 120",L.F.,E2,960.00,0.058,200.10,3.55,2.52,206.17,229.16,,,,,0.3
+051223177450,,,"W Shape, A992 steel, 2 tier, W14 x 176",L.F.,E2,912.00,0.061,294.40,3.74,2.65,300.79,331.93,,,,,0.3
+053113505100,,,"Metal floor decking, steel, non-cellular, composite, galvanized, 1-1/2"" D, 16 gauge",S.F.,E4,3500.00,0.009,6.32,0.59,0.04,6.95,7.91,,,,,0.3
+053113505120,,,"Metal floor decking, steel, non-cellular, composite, galvanized, 1-1/2"" D, 18 gauge",S.F.,E4,3650.00,0.009,4.53,0.57,0.04,5.14,5.91,,,,,0.3
+053113505140,,,"Metal floor decking, steel, non-cellular, composite, galvanized, 1-1/2"" D, 20 gauge",S.F.,E4,3800.00,0.008,4.62,0.55,0.04,5.21,5.99,,,,,0.3
+053113505200,,,"Metal floor decking, steel, non-cellular, composite, galvanized, 2"" D, 22 gauge",S.F.,E4,3860.00,0.008,3.11,0.54,0.03,3.68,4.32,,,,,0.3
+053113505300,,,"Metal floor decking, steel, non-cellular, composite, galvanized, 2"" D, 20 gauge",S.F.,E4,3600.00,0.009,4.44,0.57,0.04,5.05,5.83,,,,,0.3
+053113505400,,,"Metal floor decking, steel, non-cellular, composite, galvanized, 2"" D, 18 gauge",S.F.,E4,3380.00,0.009,4.71,0.62,0.04,5.37,6.19,,,,,0.3
+053113505500,,,"Metal floor decking, steel, non-cellular, composite, galvanized, 2"" D, 16 gauge",S.F.,E4,3200.00,0.010,6.24,0.65,0.04,6.93,7.93,,,,,0.3
+053113505700,,,"Metal floor decking, steel, non-cellular, composite, galvanized, 3"" D, 22 gauge",S.F.,E4,3200.00,0.010,3.38,0.65,0.04,4.07,4.80,,,,,0.3
+053113505800,,,"Metal floor decking, steel, non-cellular, composite, galvanized, 3"" D, 20 gauge",S.F.,E4,3000.00,0.011,4.88,0.68,0.04,5.60,6.53,,,,,0.3
+053113505900,,,"Metal floor decking, steel, non-cellular, composite, galvanized, 3"" D, 18 gauge",S.F.,E4,2850.00,0.011,4.71,0.72,0.04,5.47,6.39,,,,,0.3
+053113506000,,,"Metal floor decking, steel, non-cellular, composite, galvanized, 3"" D, 16 gauge",S.F.,E4,2700.00,0.012,7.09,0.76,0.06,7.91,9.08,,,,,0.3
+060505103202,,,"Selective Demolition, wood framing, colums, Dimensional lumber sizes",M.B.F.,2 Clab,1.10,14.545,,552.16,,552.16,839.84,,,,,0.3
+060505105660,,,"Selective demolition, wood framing, T&G floor planks",M.B.F.,2 Clab,2.00,8.000,,306.24,,306.24,459.36,,,,,0.3
+061523000000,,CLT panel - costs from: The Value Proposition for Cross-Laminated Timber Figure 13,"Laminated wood decking, CLT floor/roof, includes fire proofing and acoustical treatment",S.F.,F3,,0.015,10.05,4.35,0.60,1,1.3,,,,,0.3
+061813204400,,,"Columns, including hardware",M.B.F.,F3,2.00,20.000,3601.13,975.45,335.83,4912.41,5802.86,,,,,0.3
+033113705620,,,"Structural concrete, placing, by walking cart, 150' haul, excludes material, add to placing costs above",C.Y.,C18,24.00,0.375,,14.31,3.44,17.75,25.48,,,,,0.3
+030130620100,,,"Patching concrete, Floors, 1/4"" thick, small areas, regular grout",S.F.,1 Cefi,170.00,0.047,1.66,2.16,,3.82,5.03,,,,,0.3
+030130620150,,,"Patching concrete, floors, small area, epoxy grout, 1/4"" thick, Epoxy grout",S.F.,1 Cefi,100.00,0.080,9.42,3.68,,13.10,15.79,,,,,0.3
+030130622100,,,"Patching concrete, Walls, including chipping, cleaning and epoxy grout, 1/4” deep",S.F.,1 Cefi,65.00,0.123,9.26,5.64,,14.90,18.55,,,,,0.3
+030130622150,,,"Patching concrete, Walls, including chipping, cleaning and epoxy grout, 1/2"" deep",S.F.,1 Cefi,50.00,0.160,18.52,7.33,,25.85,31.22,,,,,0.3
+030130622200,,,"Patching concrete, Walls, including chipping, cleaning and epoxy grout, 3/4"" deep",S.F.,1 Cefi,40.00,0.200,28.00,9.21,,37.21,44.27,,,,,0.3
+031113355500,,,"C.I.P. concrete forms, elevated slab, box-out for shallow slab openings, to 10 S.F., includes shoring, erecting, bracing, stripping and cleaning",Ea.,C2,42.00,1.143,15.40,53.36,,68.76,97.73,,,,,0.3

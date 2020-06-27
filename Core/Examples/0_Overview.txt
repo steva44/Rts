@@ -1,0 +1,114 @@
+
+
+// THIS IS A "MESSY" DOCUMENT THAT TERJE WILL SOON DELETE
+
+
+Algebraic nonlinear limit-state function
+Limit-state function in Javascript
+Root-finding
+Single-variable optimization
+Downhill simplex optimization
+Directional line search optimization
+
+
+
+Bayesian inference for random variables
+Bayesian inference for linear model & search for best model
+
+Minimization of expected algebraic cost
+Design variables as mean values
+
+Reliability analysis of truss in Javascript
+Deterministic optimization of truss in Javascript
+Minimization of total expected lifecycle cost of truss in Javascript
+
+Earthquake hazards in British Columbia
+Fixed-time earthquake occurrence
+Scenario & sampling
+
+
+PLOT EARTHQUAKE INTENSITY SPECTRA! (CREATE SEPARATE MODEL)
+
+DO NOT FORGET THE DETAILED BUILDING MODEL EXAMPLE FROM THIS SUMMER (SPLIT MODELS FIRST?)
+
+
+1 / Explicit / FORM and sampling analysis with the CalREL explicit limit-state function
+
+2 / Script / FORM analysis with Script-based limit-state function
+
+3 / OpenSees / FORM analysis with OpenSees finite element model
+
+4 / Regression / Inference for random variable and linear model
+
+5 / Optimization / Deterministic optimization with explicit objective function
+
+6 / Risk / Evaluation and minimization of risk measures with several algebraic expression models
+
+F: Evaluation and minimization of risk measures with a simple finite element model
+
+G: Section force diagrams from linear static analysis of horizontal beam and 3D frame
+
+H: Dynamic analysis of linear elastic column and 3D frame
+
+I: Finite element demo of truss elements
+
+J: Finite element demo of beam-column elements
+
+K: Finite element demo of plane elements
+
+L: Finite element demo of plate elements
+
+M: Finite element demo of shell elements
+
+N: Finite element demo of brick elements
+
+O: Static inelastic analysis
+
+P: Linear dynamic analysis
+
+Q: Inelastic dynamic analysis
+
+: Static and dynamic analysis of elastic and inelastic reinforced concrete column
+
+: Static and dynamic analysis of elastic and inelastic reinforced concrete shear wall
+
+: Optimization of the FFTT CLT-steel structural system
+
+(Then demos of all the different models that came to Rts from Rt)
+
+
+WHO IS WORKING IN WHICH CLASSES:
+
+Vasantha:
+RLinearDynamicAnalysis
+RTimeIntegrator and subclasses (Newmark)
+RScaledGroundMotionModel
+RSyntheticGroundMotionModel
+RTimeSeries
+
+Abbas:
+RRCColumnComponent
+RRCShearWallComponent
+RSlabComponent
+RComponentRepairManagerModel
+RLinearFrameElement
+RDisplacementBasedElement
+RInelasticStaticAnalysis
+RSteelMaterial
+RFibreSection
+
+
+Steve:
+RComponentResponseManager 
+RLinearStaticStructuralAnalysis
+RGradientOperations
+RPlateComponent
+RBilinearMindlinPlateElement
+RMindlin9PlateElement
+
+
+
+*****************
+
+Rts methods:•	Linear solver (Including Cholesky? Matrix inverse? Determinant? Condition numbers? Eigenvalues and eigenvectors?)•	Probability distributions•	Random number generators•	Step size•	Search direction•	Merit function•	Convergence check•	Probability transformation•	Structural assembler•	Structural analysis•	Time stepperRts tools:•	Matrix operations•	Normal distribution•	Model manager???•	Quadrature?Other:•	Nonlinear equations•	Cholesky•	Stress cycle counting•	Optimization, LP, NP, Simplex•	Markov Chain Monte Carlo•	Numerical representation of functions•	Mesh generationFrom InRisk algorithm page:LINEAR EQUATIONSNONLINEAR EQUATIONSMATRIX INVERSECHOLESKY DECOMPOSITIONDETERMINANT AND CONDITION NUMBERSEIGENVALUES AND EIGENVECTORSTIME INTEGRATIONQUADRATURESTRUCTURAL ASSEMBLYSTRESS CYCLE COUNTINGPROBABILITY TRANSFORMATIONSRANDOM NUMBER GENERATIONNUMERICAL REPRESENTATION OF FUNCTIONSMARKOV CHAIN MONTE CARLO/BAYESIAN UPDATING… (is this numerical integration?)LINEAR PROGRAMMINGQUADRATIC PROGRAMMINGNONLINEAR PROGRAMMINGOPTIMIZATION ALGORITHMSOptimization ProblemsOptimality ConditionsHessian-based AlgorithmsGradient-based AlgorithmsFunction-based Algorithms
+

@@ -1,0 +1,189 @@
+//	Analytical FFTT 1 storey frame
+//	By Alfred Larsen
+//	Developed September to November 2014
+//
+//	All units in Rts are: N, m, kg, s (unless noted otherwise)
+//
+//	      <--------w-------><--------L-------><--------w------->
+//       F---->_________________ _________________ _________________                                                                  
+//            |                 |-----------------|                 |     ^           
+//            |                 |                 |                 |     |             
+//            |                 |                 |                 |     |             
+//            |                 |                 |                 |     H             
+//            |        	        |                 |                 |     |             
+//            |                 |                 |                 |     |             
+//            |                 |                 |                 |     |             
+//            |                 |                 |                 |     v             
+//    --------------------------------------------------------------------------                                                                                 
+
+// Note: no actual frame model is use, all calculations are by algebraic expressions
+// Lateral load is 200 kN
+// Beam is representative of a W250x33, 350W
+// CLT is representative of a 5 layer panel, with 3 layers of laminates running vertically
+
+
+
+
+// DECISION VARIABLES
+// Beam Length (clear span)
+RContinuousDecisionVariable |ObjectName: beamLength |CurrentValue: 1.5 |InitialValue: 1.5 |UpperBound: 0 |LowerBound: 0   |IncrementalCost: 1
+//RContinuousDecisionVariable |ObjectName: beamLength |CurrentValue: 2.5 |InitialValue: 2.5 |UpperBound: 0 |LowerBound: 0 |IncrementalCost: 1
+//RContinuousDecisionVariable |ObjectName: beamLength |CurrentValue: 3.5 |InitialValue: 3.5 |UpperBound: 0 |LowerBound: 0 |IncrementalCost: 1
+
+// Panel Width
+RContinuousDecisionVariable |ObjectName: panelWidth |CurrentValue: 1.5 |InitialValue: 1.5 |UpperBound: 0 |LowerBound: 0 |IncrementalCost: 1
+//RContinuousDecisionVariable |ObjectName: panelWidth |CurrentValue: 2.5 |InitialValue: 2.5 |UpperBound: 0 |LowerBound: 0 |IncrementalCost: 1
+//RContinuousDecisionVariable |ObjectName: panelWidth |CurrentValue: 3.5 |InitialValue: 3.5 |UpperBound: 0 |LowerBound: 0 |IncrementalCost: 1
+
+
+
+
+// RANDOM VARIABLES
+
+// GEOMETRY
+RContinuousRandomVariable |ObjectName: laminateThicknessMM |Mean: 34 |CoefficientOfVariation: 0.1 |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Lognormal (zeta, sigma) 
+RContinuousRandomVariable |ObjectName: IBeamMM |Mean: 48900000 |CoefficientOfVariation: 0.1 |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Lognormal (zeta, sigma) 
+
+// MATERIAL
+RContinuousRandomVariable |ObjectName: EWoodGPa |Mean: 9.5 |CoefficientOfVariation: 0.2 |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Lognormal (zeta, sigma)  
+RContinuousRandomVariable |ObjectName: ESteelGPa |Mean: 200 |CoefficientOfVariation: 0.1 |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Lognormal (zeta, sigma) 
+RContinuousRandomVariable |ObjectName: fWoodMPa |Mean: 5.5 |CoefficientOfVariation: 0.2 |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Lognormal (zeta, sigma)  
+RContinuousRandomVariable |ObjectName: beamBMResistancekNm |Mean: 132 |CoefficientOfVariation: 0.1 |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Lognormal (zeta, sigma) 
+RContinuousRandomVariable |ObjectName: beamShearResistancekN |Mean: 323 |CoefficientOfVariation: 0.1 |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Lognormal (zeta, sigma) 
+
+// LOADING
+RContinuousRandomVariable |ObjectName: theLoadkN |Mean: 200 |CoefficientOfVariation: 0.2 |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Lognormal (zeta, sigma)
+
+// COST RV
+RContinuousRandomVariable |ObjectName: thetaSteel |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Normal (mean, stdv) |Mean: 750000 |CoefficientOfVariation: 0.1 
+RContinuousRandomVariable |ObjectName: thetaCLT |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Normal (mean, stdv) |Mean: 200 |CoefficientOfVariation: 0.1 
+RContinuousRandomVariable |ObjectName: thetaDrift |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Normal (mean, stdv) |Mean: 1500 |CoefficientOfVariation: 0.1 
+RContinuousRandomVariable |ObjectName: thetaStructuralSteelShear |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Normal (mean, stdv) |Mean: 500 |CoefficientOfVariation: 0.1 
+RContinuousRandomVariable |ObjectName: thetaStructuralSteelMoment |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Normal (mean, stdv) |Mean: 100 |CoefficientOfVariation: 0.1 
+RContinuousRandomVariable |ObjectName: thetaStructuralCLT |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Normal (mean, stdv) |Mean: 500 |CoefficientOfVariation: 0.1 
+RContinuousRandomVariable |ObjectName: thetaCapacityDesign |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Normal (mean, stdv) |Mean: 500 |CoefficientOfVariation: 0.1 
+
+
+
+
+// CONSTANTS
+RConstant |ObjectName: storeyHeight |CurrentValue: 3.5
+RConstant |ObjectName: connectionBearingPlateDepthRatio |CurrentValue: 0.15
+RConstant |ObjectName: k3 |CurrentValue: 0.603
+
+
+
+
+// EQUATIONS FOR CONVERTING UNITS
+// These are included for convenience and sometimes issues are caused with very large or very small values
+RAlgebraicExpressionModel |ObjectName: laminateThicknessM |OutputLevel: Minimum |Expression: laminateThicknessMM/1000
+RAlgebraicExpressionModel |ObjectName: fWoodNm |OutputLevel: Minimum |Expression: fWoodMPa*10^6
+RAlgebraicExpressionModel |ObjectName: EWoodNm |OutputLevel: Minimum |Expression: EWoodGPa*10^9
+RAlgebraicExpressionModel |ObjectName: IBeamM |OutputLevel: Minimum |Expression: IBeamMM/10^12
+RAlgebraicExpressionModel |ObjectName: beamShearResistanceN |OutputLevel: Minimum |Expression: beamShearResistancekN*10^3
+RAlgebraicExpressionModel |ObjectName: beamBMResistanceNm |OutputLevel: Minimum |Expression: beamBMResistancekNm*10^3
+RAlgebraicExpressionModel |ObjectName: ESteelNm |OutputLevel: Minimum |Expression: ESteelGPa*10^9
+RAlgebraicExpressionModel |ObjectName: theLoadN |OutputLevel: Minimum |Expression: theLoadkN*1000
+
+
+
+
+// WOOD PROPERTIES EQUATIONS
+RAlgebraicExpressionModel |ObjectName: IWood |OutputLevel: Minimum |Expression: 3*laminateThicknessMResponse*(panelWidth^3)/12
+RAlgebraicExpressionModel |ObjectName: EWoodNmEff |OutputLevel: Minimum |Expression: EWoodNmResponse*k3
+RAlgebraicExpressionModel |ObjectName: fWoodNmEff |OutputLevel: Minimum |Expression: k3*fWoodNmResponse
+RAlgebraicExpressionModel |ObjectName: CLTBMApplied |OutputLevel: Minimum |Expression: theLoadNResponse*storeyHeight/2
+RAlgebraicExpressionModel |ObjectName: CLTShearResistance |OutputLevel: Minimum |Expression: connectionBearingPlateDepthRatio*panelWidth*3*laminateThicknessMResponse*fWoodNmEffResponse
+RAlgebraicExpressionModel |ObjectName: CLTBMResistance |OutputLevel: Minimum |Expression: 2*fWoodNmEffResponse*IWoodResponse/panelWidth
+
+
+
+
+// STEEL FORCE EQUATIONS
+RAlgebraicExpressionModel |ObjectName: beamBMApplied |OutputLevel: Minimum |Expression: theLoadNResponse*storeyHeight/2*beamLength/(beamLength+panelWidth)
+RAlgebraicExpressionModel |ObjectName: beamShearApplied |OutputLevel: Minimum |Expression: 2*beamBMAppliedResponse/beamLength
+
+
+
+
+// ANALYTICAL DEFLECTION EQUATION
+RAlgebraicExpressionModel |ObjectName: theDeflection |OutputLevel: Minimum |Expression: (theLoadNResponse)*(storeyHeight^2)/(6*EWoodNmEffResponse*IWoodResponse) + (theLoadNResponse)*(beamLength)*(storeyHeight^2)/(12*ESteelNmResponse*IBeamMResponse)*(beamLength/(beamLength+panelWidth))^2
+
+
+
+
+// DRIFT EQUATION
+RAlgebraicExpressionModel |ObjectName: theDrift |OutputLevel: Minimum |Expression: theDeflectionResponse/storeyHeight
+
+
+
+
+// COST MODELS
+
+// COSTS - STEEL VOLUME
+RAlgebraicExpressionModel |ObjectName: costSteel |OutputLevel: Maximum |Expression: thetaSteel*IBeamMResponse*(beamLength+2*panelWidth)^2
+
+// COSTS - CLT VOLUME
+RAlgebraicExpressionModel |ObjectName: costCLT |OutputLevel: Maximum |Expression: thetaCLT*2*5*laminateThicknessMResponse*panelWidth^2*storeyHeight
+
+// COSTS - DRIFT
+RAlgebraicExpressionModel |ObjectName: costDrift |OutputLevel: Maximum |Expression: thetaDrift*(theDriftResponse*100)^2
+
+// COSTS - STRUCTURAL (STEEL AND CLT STRESS RELATED)
+RAlgebraicExpressionModel |ObjectName: costStructuralSteelShear |OutputLevel: Maximum |Expression: thetaStructuralSteelShear*(beamShearAppliedResponse/beamShearResistanceNResponse)^4 
+RAlgebraicExpressionModel |ObjectName: costStructuralSteelMoment |OutputLevel: Maximum |Expression: thetaStructuralSteelMoment*(beamBMAppliedResponse/beamBMResistanceNmResponse)^4 
+RAlgebraicExpressionModel |ObjectName: costStructuralCLT |OutputLevel: Maximum |Expression: thetaStructuralCLT*(beamShearAppliedResponse/CLTShearResistanceResponse)^4 
+
+// COSTS - CAPACITY DESIGN (CLT BEAM MUST BE STRONGER THAN STEEL BEAM)
+RAlgebraicExpressionModel |ObjectName: costCapacityDesign |OutputLevel: Maximum |Expression: thetaCapacityDesign*(beamBMResistanceNmResponse/CLTBMResistanceResponse)^4 
+
+// COSTS - TOTAL
+RAlgebraicExpressionModel |ObjectName: costTotal |OutputLevel: Maximum |Expression: costSteelResponse+costCLTResponse+costDriftResponse+costStructuralSteelShearResponse+costStructuralSteelMomentResponse+costStructuralCLTResponse+costCapacityDesignResponse
+
+
+
+
+
+// ORCHESTRATING MODELS
+RFORMModel |ObjectName: myFORMCostModel |OutputLevel: Minimum |InputParameter: costTotalResponse |Threshold: 7000 |MaxSteps: 10 |GradientMethod: Finite Difference |ProbabilityTransformation: myIndependentProbabilityTransformations |SearchDirection: myHLRFSearchDirection |StepSize: myArmijoStepSize |ConvergenceCheck: myFORMConvergenceCheck
+
+RSamplingModel |ObjectName: mySamplingCostModel |OutputLevel: Minimum |InputParameter: costTotalResponse |Threshold: 7000 |MaxSamples: 50000 |TargetCov: 0.005 |SamplingCentre: Origin |RandomNumberGenerator: myInHouseRandomNumberGenerator |ProbabilityTransformation: myIndependentProbabilityTransformations
+
+RRiskModel |ObjectName: myRiskCostModel |OutputLevel: Minimum |InputFromFORM: myFORMCostModelResponse |InputFromSampling: mySamplingCostModelProbabilityResponse
+
+ROptimizationModel |ObjectName: myRiskOptimizationCostModel |OutputLevel: Medium |Objective: myRiskCostModelResponse |MaxSteps: 200 |SearchDirection: myOptimizationSearchDirection |StepSize: myOptimizationFixedStepSize |ConvergenceCheck: myOptimizationConvergenceCheck
+
+
+
+
+// GENERAL TOOLS
+RInHouseProbabilityDistributions |ObjectName: theProbabilityDistributions |OutputLevel: Minimum
+RIndependenceProbabilityTransformation |ObjectName: myIndependentProbabilityTransformations |OutputLevel: Minimum |ProbabilityDistributions: theProbabilityDistributions
+RInHouseRandomNumberGenerator |ObjectName: myInHouseRandomNumberGenerator |OutputLevel: Minimum |Seed: 0
+
+
+
+
+// FORM TOOLS
+RStandardFORMConvergenceCheck |ObjectName: myFORMConvergenceCheck |OutputLevel: Minimum |Tolerance1: 0.01 |Tolerance2: 0.01
+RHLRFSearchDirection |ObjectName: myHLRFSearchDirection |OutputLevel: Minimum
+RArmijoStepSize |ObjectName: myArmijoStepSize |OutputLevel: Minimum |ProbabilityTransformation: myIndependentProbabilityTransformations |MeritFunction: myMeritFunction |MaximumReductions: 10 |Base: 0.5 |InitialStepSize: 1 |InitialStepsCount: 2 |SphereRadius: 50 |SphereDistance: 0.1 |SphereEvolution: 0.5
+RADKZhangMeritFunction |ObjectName: myMeritFunction |OutputLevel: Minimum |Multiplier: 2 |Adder: 10 |Factor: 0.5
+RFixedStepSize |ObjectName: myFORMFixedStepSize |OutputLevel: Minimum |StepSize: 1
+
+
+
+
+// OPTIMIZATION TOOLS
+RGradientNormConvergenceCheck |ObjectName: myOptimizationConvergenceCheck |OutputLevel: Minimum |Tolerance: 0.05
+
+// Steepest Descent
+//RSteepestDescentSearchDirection |ObjectName: myOptimizationSearchDirection |OutputLevel: Minimum
+//RFixedStepSize |ObjectName: myOptimizationFixedStepSize |OutputLevel: Minimum |StepSize: 0.0001
+
+// BFGS
+RBFGSSearchDirection |ObjectName: myOptimizationSearchDirection |OutputLevel: Minimum
+RFixedStepSize |ObjectName: myOptimizationFixedStepSize |OutputLevel: Minimum |StepSize: 0.5
+
+
+

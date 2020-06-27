@@ -1,0 +1,26 @@
+
+// This file is part of Rts, the software framework developed in the research group of 
+// Professor Terje Haukaas at the University of British Columbia in Vancouver, Canada
+// Web: terje.civil.ubc.ca  Email: terje@civil.ubc.ca
+
+
+
+
+// CONSTANT
+RConstant |ObjectName: T |CurrentValue: 0
+
+
+// EXPRESSION
+RAlgebraicExpressionModel |ObjectName: theTExpression |OutputLevel: Medium |Expression: (204165.5 / (330.0 - 2.0 * T) + 10400.0 / (T - 20.0)) 
+
+
+// SEARCH ALGORITHM
+RBisectionLineSearchAlgorithm     |ObjectName: theBisectionSearchAlgorithm     |OutputLevel: Maximum |LowerBound: 30 |UpperBound: 100    |MaxIterations: 100 |Tolerance: 0.01 |Delay: 1.0
+RNewtonLineSearchAlgorithm        |ObjectName: theNewtonSearchAlgorithm        |OutputLevel: Maximum |StartPoint: 30 |MaxIterations: 100 |Tolerance: 0.01    |Delay: 1.0
+RSecantLineSearchAlgorithm        |ObjectName: theSecantSearchAlgorithm        |OutputLevel: Maximum |LowerBound: 30 |UpperBound: 100    |MaxIterations: 100 |Tolerance: 0.01 |Delay: 1.0
+RGoldenSectionLineSearchAlgorithm |ObjectName: theGoldenSectionSearchAlgorithm |OutputLevel: Maximum |LowerBound: 30 |UpperBound: 100    |MaxIterations: 100 |Tolerance: 0.01 |Delay: 1.0
+
+
+// SEARCH MODEL
+R1DOptimizationModel |ObjectName: theSingleVariableOptimizationModel |OutputLevel: Maximum |Perturbation: 0.001 |Function: theTExpressionResponse |Parameter: T |LineSearchAlgorithm: theBisectionSearchAlgorithm
+

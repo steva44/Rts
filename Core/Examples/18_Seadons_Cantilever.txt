@@ -1,0 +1,68 @@
+
+RInHouseRandomNumberGenerator          |ObjectName: myGenerator
+RInHouseProbabilityDistributions         |ObjectName: myProbDist             |OutputLevel: Minimum 
+RIndependenceProbabilityTransformation |ObjectName: myProbTransformation   |OutputLevel: Minimum |ProbabilityDistributions: myProbDist
+
+RBasicCholeskyDecomposition    		   |ObjectName: myDecomposition |OutputLevel: Minimum
+RCholeskyLinearSolver                  |ObjectName: myLinearSolver |OutputLevel: Minimum   |CholeskyDecomposition: myDecomposition
+RConnectivityTableAssembler            |ObjectName: myAssembler |OutputLevel: Medium 
+RLinearStaticStructuralAnalysis        |ObjectName: myStaticAnalysis |OutputLevel: Minimum |Assembler: myAssembler |LinearSolver: myLinearSolver
+
+
+RContinuousRandomVariable |ObjectName: pointLoad  |DistributionType: Normal (mean, stdv) |Mean: -17000  |StandardDeviation: 500  
+RContinuousRandomVariable |ObjectName: thetaCLT  |DistributionType: Normal (mean, stdv) |Mean: 200 |CoefficientOfVariation: 0.2
+RContinuousRandomVariable |ObjectName: thetaDeflection  |DistributionType: Normal (mean, stdv) |Mean: -1000 |CoefficientOfVariation: 0.2  
+
+RContinuousDecisionVariable |ObjectName: beamThickness |CurrentValue: 0.15 |UpperBound: 0 |LowerBound: 0 |IncrementalCost: 1
+
+RConstant |ObjectName: beamLength |CurrentValue: 9
+RConstant |ObjectName: beamWidth  |CurrentValue: 3
+
+RPoint |ObjectName: pointA  |XCoordinate: 0   |YCoordinate: -1     |ZCoordinate: 2 
+RPoint |ObjectName: pointB  |XCoordinate: 0   |YCoordinate: 5     |ZCoordinate: 2 
+RPoint |ObjectName: pointC  |XCoordinate: 0   |YCoordinate: 5     |ZCoordinate: 4 
+RPoint |ObjectName: pointD  |XCoordinate: 0   |YCoordinate: -1     |ZCoordinate: 4 
+
+RPoint |ObjectName: horzPoint1   |XCoordinate: 0	   |YCoordinate: 0   			|ZCoordinate: 3 
+RPoint |ObjectName: horzPoint2   |XCoordinate: beamLength  |YCoordinate: 0    			|ZCoordinate: 3   
+RPoint |ObjectName: horzPoint3   |XCoordinate: beamLength  |YCoordinate: beamWidth		|ZCoordinate: 3  |ZForce: pointLoad
+RPoint |ObjectName: horzPoint4   |XCoordinate: 0	   |YCoordinate: beamWidth		|ZCoordinate: 3 
+
+RPlateComponent  |ObjectName: cantileverBeam |Point1: horzPoint1 |Point2: horzPoint2 |Point3: horzPoint3 |Point4: horzPoint4  |MeshOption: 106 |Thickness: beamThickness
+
+RFixedPlaneComponent |ObjectName: ground |Point1: pointA |Point2: pointB  |Point3: pointC |Point4: pointD
+
+RStructuralAnalysisModel |ObjectName: myStaticBuilding |OutputLevel: Medium  |StructuralAnalysis: myStaticAnalysis |Responses: horzPoint3.ZDisplacement 
+
+
+RStandardFORMConvergenceCheck          |ObjectName: myConvergenceCheck     |OutputLevel: Minimum |Tolerance1: 0.001     |Tolerance2: 0.001
+RADKZhangMeritFunction                 |ObjectName: myMeritFunction        |OutputLevel: Minimum |FactorC: 2
+RHLRFSearchDirection                   |ObjectName: myFORMSearchDirection  |OutputLevel: Minimum 
+RGradientNormConvergenceCheck          |ObjectName: theConvergenceCheck    |OutputLevel: Minimum |Tolerance: 0.05
+//RSlowStartStepSize                   |ObjectName: myOptiStepSize         |OutputLevel: Minimum |StartStepSize: 0.01 |FinalStepSize: 1.0 |RampUpSteps: 5
+//RBFGSSearchDirection                 |ObjectName: myOptiSearchDirection  |OutputLevel: Minimum 
+//RSteepestDescentSearchDirection        |ObjectName: myOptiSearchDirection  |OutputLevel: Minimum 
+//RArmijoLineSearchAlgorithm |ObjectName: myLineSearch |OutputLevel: Medium |Base: 0.5
+RFixedLineSearchAlgorithm |ObjectName: myLineSearch |FixedResult: 1.0
+
+
+RAlgebraicExpressionModel |ObjectName: theFunction  |Expression: -myStaticBuildinghorzPoint3ZDisplacement
+
+
+
+RFORMModel     |ObjectName: myFORMModel    |OutputLevel: Maximum |InputParameter: theFunctionResponse |Threshold: 0.75 |ProbabilityTransformation: myProbTransformation |SearchDirection: myFORMSearchDirection |ConvergenceCheck: myConvergenceCheck |MaxSteps: 15 |GradientMethod: DDM |MeritFunction: myMeritFunction |LineSearchAlgorithm: myLineSearch
+
+
+RSamplingModel |ObjectName: theSamplingModel |OutputLevel: Medium  |InputParameter: theFunctionResponse |Threshold: 0.75 |ProbabilityTransformation: myProbTransformation |TargetCov: 0.02 |MaxSamples: 110 |PlotInterval: 10 |RandomNumberGenerator: myGenerator
+
+
+
+
+
+
+
+
+
+
+
+

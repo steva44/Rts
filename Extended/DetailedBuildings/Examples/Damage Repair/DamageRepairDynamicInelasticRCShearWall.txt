@@ -1,0 +1,128 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//															//
+//															//
+//	Damage and repair example for dynamic inelastic reinforced concrete shear wall					//
+//															//
+//															//
+//  	Stevan Gavrilovic, University of British Columbia								//
+//															//
+//  	All units in N, m, kg, Pa											//
+//															//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//**** Integrator ****
+
+RNewmarkIntegrator |ObjectName: theIntegrator |Gamma: 0.5 |Beta: 0.25
+
+
+//**** Constraint Handler ****
+
+RTransformationConstraintHandler |ObjectName: theConstraintHandler
+
+
+//**** DOF Numberer ****
+
+RDOFNumberer |ObjectName: theDOFNumberer |NumberingScheme: RCM
+
+
+//**** Convergence Test ****
+
+RCTestNormDispIncr |ObjectName: theConvergenceTest |Tolerance: 1.0e-6 |MaxNumberIncrements: 250
+
+
+//**** Solver ****
+
+RMumpsParallelSOE |ObjectName: theSolver
+
+
+//**** Equation Solution Algorithm ****
+
+RKrylovNewtonEquationSolutionAlgorithm  |ObjectName: theSolutionAlgo |ConvergenceTest: theConvergenceTest
+
+
+//**** Building Information ****
+
+// The time of construction (start time) and the time of demolition (end time)
+RTime |ObjectName: startTime |Time: 2017-01-01 17:00:00.000
+RTime |ObjectName: endTime |Time: 2067-01-01 17:00:00.000
+
+RLocation |ObjectName: buildingLocation |Latitude: 49.295448 |Longitude: -123.265801 
+
+RBIM |ObjectName: theBIM |Location: buildingLocation |TimeOfConstruction: startTime |TimeOfDemolition: endTime 
+
+
+//**** Hazards and Loading [N] ****
+
+RFixedTimeOccurrenceModel |ObjectName: earthquakeOccurrenceModel |OccurrenceTime: startTime
+
+RPathTimeSeries |ObjectName: theElCentroTimeSeries |FileName: el_centro.dat |ScaleFactor: 9.81 |TimeInterval: 0.02 
+
+// Tags corresponding to the SeriesDirection options:
+// 1 - corresponds to translation along the global X axis
+// 2 - corresponds to translation along the global Y axis
+// 3 - corresponds to translation along the global Z axis
+// 4 - corresponds to rotation about the global X axis
+// 5 - corresponds to rotation about the global Y axis
+// 6 - corresponds to rotation about the global Z axis
+// Apply the series in both the x and y directions
+RUniformExcitationPattern |ObjectName: theEQLoadPatternX |AccelTimeSeries: theElCentroTimeSeries |SeriesDirection: 1
+RUniformExcitationPattern |ObjectName: theEQLoadPatternY |AccelTimeSeries: theElCentroTimeSeries |SeriesDirection: 2
+ 
+RLoadPatternModel |ObjectName: theEarthquakeHazard |LoadPatterns: theEQLoadPatternX; theEQLoadPatternY |Occurrence: earthquakeOccurrenceModelResponse
+
+// Mass 
+// For total destruction use 2000000.0
+// For mid-range damage 1000000.0
+RConstant |ObjectName: theMass |CurrentValue: 1500000.0
+
+
+//**** Boundary Conditions ****
+
+RPoint |ObjectName: pointA |XCoordinate: -10 |YCoordinate: -10 |ZCoordinate: 0
+RPoint |ObjectName: pointB |XCoordinate:  10 |YCoordinate: -10 |ZCoordinate: 0 
+RPoint |ObjectName: pointC |XCoordinate:  10 |YCoordinate:  10 |ZCoordinate: 0 
+RPoint |ObjectName: pointD |XCoordinate: -10 |YCoordinate:  10 |ZCoordinate: 0 
+
+RFixedPlaneBoundaryCondition |ObjectName: ground |Point1: pointA |Point2: pointB |Point3: pointC |Point4: pointD
+
+
+//**** Component Geometry [m] ****
+
+RPoint |ObjectName: point1 |XCoordinate: 0 |YCoordinate: 0 |ZCoordinate: 0	
+RPoint |ObjectName: point2 |XCoordinate: 4 |YCoordinate: 0 |ZCoordinate: 0 	
+RPoint |ObjectName: point3 |XCoordinate: 4 |YCoordinate: 0 |ZCoordinate: 3 |Mass: theMass
+RPoint |ObjectName: point4 |XCoordinate: 0 |YCoordinate: 0 |ZCoordinate: 3 |Mass: theMass
+
+// Wall thickness 
+RConstant  |ObjectName: shearWallThickness |CurrentValue: 0.2
+
+
+//**** Components ****
+
+RRCShearWallComponent |ObjectName: shearWall1 |Point1: point1 |Point2: point2 |Point3: point3 |Point4: point4 |Thickness: shearWallThickness |MeshOption: 3
+
+
+//**** Structural Analysis Method ****
+
+// The NumberSteps parameter is the number of analysis steps that will be performed with a given time-step dt
+RInelasticDynamicStructuralAnalysis |ObjectName: theStructuralAnalysisType |OutputLevel: Maximum |ConstraintHandler: theConstraintHandler |DOFNumberer: theDOFNumberer |LinearSOESolver: theSolver |Integrator: theIntegrator |ConvergenceTest: theConvergenceTest |EquationSolutionAlgorithm: theSolutionAlgo |VisualDamageModel: theVisualDamageModel |TimeStep: 0.02 |NumberSteps: 500
+
+
+//*************************************************************************************
+//****************************** Orchestrating Models *********************************
+//*************************************************************************************
+
+
+// Structural Analysis Model
+RStructuralAnalysisModel |ObjectName: theSAModel |StructuralAnalysis: theStructuralAnalysisType |Hazards: theEarthquakeHazard; 
+
+
+// Visual Damage Model
+RVisualDamageModel |ObjectName: theVisualDamageModel |InputParameter: theSAModelResponse |OutputLevel: Maximum 
+
+
+// Repair Impact Model
+RStevesRepairImpactModel |ObjectName: repairImpactModel |BIM: theBIM |InputParameter: theSAModelResponse
+
+

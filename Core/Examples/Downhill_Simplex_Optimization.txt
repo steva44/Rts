@@ -1,0 +1,33 @@
+
+// This file is part of Rts, the software framework developed in the research group of 
+// Professor Terje Haukaas at the University of British Columbia in Vancouver, Canada
+// Web: terje.civil.ubc.ca  Email: terje@civil.ubc.ca
+
+
+
+
+// DECISION VARIABLES
+RContinuousDecisionVariable |ObjectName: x1 |CurrentValue: 0
+RContinuousDecisionVariable |ObjectName: x2 |CurrentValue: 0
+
+
+// CONSTANTS
+RConstant |ObjectName: k1 |CurrentValue: 100.0
+RConstant |ObjectName: k2 |CurrentValue: 90.0
+RConstant |ObjectName: Fx1 |CurrentValue: 20.0
+RConstant |ObjectName: Fx2 |CurrentValue: 40.0
+
+
+// OBJECTIVE
+RAlgebraicExpressionModel |ObjectName: potentialEnergy |Expression: k1 * ( sqrt( x1^2 + (x2+1)^2 ) - 1 )^2 + k2 * ( sqrt( x1^2 + (x2-1)^2 ) - 1 )^2 - ( Fx1 * x1 + Fx2 * x2 )
+
+
+// OPTIMIZATION MODEL
+ROptimizationModel |ObjectName: theOptimizationModel |OutputLevel: Maximum |Objective: potentialEnergyResponse |OptimizationAlgorithm: theOptimizationAlgorithm
+
+
+
+// OPTIMIZATION ALGORITHM
+RDownhillSimplexOptimizationAlgorithm |ObjectName: theOptimizationAlgorithm |OutputLevel: Maximum |Alpha: 1 |Gamma: 2 |Rho: -0.5 |Sigma: -0.5 |MaxSteps: 50 |Tolerance: 0.001 |Delay: 1.0
+
+

@@ -1,0 +1,44 @@
+
+// PARAMETERS
+//RConstant |ObjectName: L  |CurrentValue: 2000
+//RConstant |ObjectName: b  |CurrentValue: 200
+
+RContinuousRandomVariable   |ObjectName: L |DistributionType: Lognormal (zeta, sigma) |Mean: 2000 |CoefficientOfVariation: 0.1  
+RContinuousRandomVariable   |ObjectName: b |DistributionType: Lognormal (zeta, sigma) |Mean: 200  |CoefficientOfVariation: 0.1   
+
+RContinuousRandomVariable   |ObjectName: P |DistributionType: Lognormal (zeta, sigma) |Mean: 5000  |StandardDeviation: 500   
+RContinuousDecisionVariable |ObjectName: h |CurrentValue: 500 |InitialValue: 500
+
+// TOOLS
+RInHouseRandomNumberGenerator          |ObjectName: myGenerator
+RGSLProbabilityDistributions       |ObjectName: myProbDist             |OutputLevel: Maximum 
+
+RIndependenceProbabilityTransformation |ObjectName: myProbTransformation   |OutputLevel: Minimum |ProbabilityDistributions: myProbDist 
+RStandardFORMConvergenceCheck          |ObjectName: myConvergenceCheck     |OutputLevel: Minimum |Tolerance1: 0.001     |Tolerance2: 0.001
+RADKZhangMeritFunction                 |ObjectName: myMeritFunction        |OutputLevel: Minimum |Multiplier: 2 |Adder: 10 |Factor: 0.5
+RFixedStepSize                         |ObjectName: myFORMStepSize         |OutputLevel: Minimum |StepSize: 1
+RHLRFSearchDirection                   |ObjectName: myFORMSearchDirection  |OutputLevel: Minimum 
+
+RGradientNormConvergenceCheck          |ObjectName: theConvergenceCheck    |OutputLevel: Minimum |Tolerance: 0.05
+RSlowStartStepSize                     |ObjectName: myOptiStepSize         |OutputLevel: Minimum |StartStepSize: 0.01 |FinalStepSize: 1.0 |RampUpSteps: 5
+RBFGSSearchDirection                   |ObjectName: myOptiSearchDirection  |OutputLevel: Minimum 
+//RSteepestDescentSearchDirection        |ObjectName: myOptiSearchDirection  |OutputLevel: Minimum 
+
+// MODELS
+RTerjesConstructionCostModel |ObjectName: myConstrCostModel |Width: b |Height: h |Length: L
+RTerjesRepairCostModel       |ObjectName: myRepairCostModel  |Width: b |Height: h |Length: L |Load: P
+RSummationModel              |ObjectName: myTotalCost   |InputList: myConstrCostModelResponse; myRepairCostModelResponse;
+
+RFOSMModel                   |ObjectName: myFOSMModel         |OutputLevel: Maximum |InputParameter: myTotalCostResponse |Threshold: 2300.0  |GradientMethod: Direct Differentiation
+
+RFORMModel                   |ObjectName: myFORMModel         |OutputLevel: Medium |InputParameter: myTotalCostResponse |Threshold: 2300.0 |ProbabilityTransformation: myProbTransformation |SearchDirection: myFORMSearchDirection |StepSize: myFORMStepSize |ConvergenceCheck: myConvergenceCheck |MaxSteps: 10  |GradientMethod: Direct Differentiation
+
+RRiskModel                   |ObjectName: myRiskModel         |OutputLevel: Maximum    |Input: myFORMModelResponse |CostIncrement: 20.0 |ProbabilityTolerance: 0.001
+
+ROptimizationModel           |ObjectName: myOptimizationModel |OutputLevel: Maximum |Objective: myRiskModelResponse |SearchDirection: myOptiSearchDirection |StepSize: myOptiStepSize |ConvergenceCheck: theConvergenceCheck |MaxSteps: 20 |GradientMethod: Direct Differentiation
+
+
+
+
+
+RSamplingModel |ObjectName: theSamplingModel |OutputLevel: Medium  |InputParameter: myTotalCostResponse |Threshold: 2300.0 |ProbabilityTransformation: myProbTransformation   |MaxSamples: 1000000 |PlotInterval: 100 |RandomNumberGenerator: myGenerator |TargetCov: 0.001

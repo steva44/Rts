@@ -1,0 +1,242 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//															//
+//															//
+//	Detailed lifecycle analysis of a six-storey building using BIM							//
+//	This example employs a basic single degree-of-freedom model for the building response				//
+//															//
+//															//
+//  	Stevan Gavrilovic, University of British Columbia								//
+//															//
+//  	All units in N, m, kg, Pa											//
+//															//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//**** Building Information ****
+
+
+// The time of construction (start time) and the time of demolition (end time)
+RTime |ObjectName: startTime |Time: 2017-01-01 17:00:00.000
+RTime |ObjectName: endTime   |Time: 2067-01-01 17:00:00.000
+
+RLocation |ObjectName: buildingLocation  |Latitude: 49.268434 |Longitude: -123.168222 
+RBIM |ObjectName: theBIM |Location: buildingLocation |IfcFile: Simple2Floors.ifc |TimeOfConstruction: startTime |TimeOfDemolition: endTime |NumberOfHouseHolds: 40 |BuildingType: C2M |BuildingOccupancyClass: RES3
+
+
+//**** Hazards and Loading [N] ****
+
+// Earthquake occurrence times
+RPoissonPointProcessOccurrenceModel |ObjectName: CASREarthquakeOccurrenceTime |StartTime: startTime |EndTime: endTime |ReturnPeriodInYears: 5.34645
+RPoissonPointProcessOccurrenceModel |ObjectName: GSPEarthquakeOccurrenceTime |StartTime: startTime |EndTime: endTime |ReturnPeriodInYears: 10.77853
+RPoissonPointProcessOccurrenceModel |ObjectName: JDFFEarthquakeOccurrenceTime |StartTime: startTime |EndTime: endTime |ReturnPeriodInYears: 127.3269
+RPoissonPointProcessOccurrenceModel |ObjectName: JDFNEarthquakeOccurrenceTime |StartTime: startTime |EndTime: endTime |ReturnPeriodInYears: 288.5004
+RPoissonPointProcessOccurrenceModel |ObjectName: NOFREarthquakeOccurrenceTime |StartTime: startTime |EndTime: endTime |ReturnPeriodInYears: 9.7901
+RPoissonPointProcessOccurrenceModel |ObjectName: CSTEarthquakeOccurrenceTime |StartTime: startTime |EndTime: endTime |ReturnPeriodInYears: 6.904265
+RLognormalOccurrenceModel|ObjectName: SubEarthquakeOccurrenceTimeM9 |StartTime: startTime |EndTime: endTime |Mean: 520 |StandardDeviation: 120 |PreviousOccurenceTime: 1700-01-26 21:00:00.000
+RLognormalOccurrenceModel|ObjectName: SubEarthquakeOccurrenceTimeM8 |StartTime: startTime |EndTime: endTime |Mean: 520 |StandardDeviation: 120 |PreviousOccurenceTime: 1700-01-26 21:00:00.000
+
+
+// Earthquake Parameters
+RConstant |ObjectName: MMin |CurrentValue: 5.0
+RConstant |ObjectName: CrustalDepth |CurrentValue: 0
+RConstant |ObjectName: SubcrustalDepth |CurrentValue: 5
+RConstant |ObjectName: FixedPeriod |CurrentValue: 1.0
+RConstant |ObjectName: MaxMagnitude |CurrentValue: 7.0
+
+
+// Cascade Mountains - CASR Source
+RLocation |ObjectName: CASR_Point01 |Latitude: 51.900 |Longitude: -123.600
+RLocation |ObjectName: CASR_Point02 |Latitude: 51.200 |Longitude: -122.000
+RLocation |ObjectName: CASR_Point03 |Latitude: 48.700 |Longitude: -120.000
+RLocation |ObjectName: CASR_Point04 |Latitude: 47.000 |Longitude: -120.000
+RLocation |ObjectName: CASR_Point05 |Latitude: 47.000 |Longitude: -124.030
+RLocation |ObjectName: CASR_Point06 |Latitude: 47.560 |Longitude: -123.900
+RLocation |ObjectName: CASR_Point07 |Latitude: 48.030 |Longitude: -124.230
+RLocation |ObjectName: CASR_Point08 |Latitude: 49.540 |Longitude: -126.710
+RLocation |ObjectName: CASR_Point09 |Latitude: 49.740 |Longitude: -126.400
+RLocation |ObjectName: CASR_Point10 |Latitude: 49.910 |Longitude: -126.710
+
+RPolygonalAreaSourceModel |ObjectName: CASRLocationModel |BoundaryLocationList:  CASR_Point01; CASR_Point02; CASR_Point03; CASR_Point04; CASR_Point05; CASR_Point06; CASR_Point07; CASR_Point08; CASR_Point09; CASR_Point10; |Depth: CrustalDepth |OutputLevel: Minimum
+RConstant |ObjectName: CASRMmax |CurrentValue: 7.7000
+RContinuousRandomVariable |ObjectName: CASRBeta |DistributionType: Lognormal (zeta, sigma) |Mean: 1.015 |StandardDeviation: 0.37760
+RBoundedExponentialMagnitudeModel |ObjectName: CASRMagnitudeModel |MinimumMagnitude: MMin |MaximumMagnitude: CASRMmax |Beta: CASRBeta |Occurrence: CASREarthquakeOccurrenceTimeResponse |OutputLevel: Minimum
+
+
+// Georgia Strait (deep intraslab) - GSP Source
+RLocation |ObjectName: GSP_Point01 |Latitude: 49.550 |Longitude: -123.850
+RLocation |ObjectName: GSP_Point02 |Latitude: 48.840 |Longitude: -122.400
+RLocation |ObjectName: GSP_Point03 |Latitude: 48.300 |Longitude: -121.720
+RLocation |ObjectName: GSP_Point04 |Latitude: 47.680 |Longitude: -121.500
+RLocation |ObjectName: GSP_Point05 |Latitude: 47.000 |Longitude: -121.700
+RLocation |ObjectName: GSP_Point06 |Latitude: 47.000 |Longitude: -123.300
+RLocation |ObjectName: GSP_Point07 |Latitude: 47.530 |Longitude: -123.220
+RLocation |ObjectName: GSP_Point08 |Latitude: 47.870 |Longitude: -123.350
+RLocation |ObjectName: GSP_Point09 |Latitude: 48.250 |Longitude: -123.830
+RLocation |ObjectName: GSP_Point10 |Latitude: 48.850 |Longitude: -124.750
+
+RPolygonalAreaSourceModel |ObjectName: GSPLocationModel |OutputLevel: Maximum |BoundaryLocationList: GSP_Point01; GSP_Point02; GSP_Point03; GSP_Point04; GSP_Point05; GSP_Point06; GSP_Point07; GSP_Point08; GSP_Point09; GSP_Point10 |Depth: SubcrustalDepth
+RContinuousRandomVariable |ObjectName: GSPMmax |DistributionType: Lognormal (zeta, sigma) |Mean: 7.0600 |StandardDeviation: 0.12000
+RContinuousRandomVariable |ObjectName: GSPBeta |DistributionType: Lognormal (zeta, sigma) |Mean: 1.128 |StandardDeviation: 0.07640
+RBoundedExponentialMagnitudeModel |ObjectName: GSPMagnitudeModel |OutputLevel: Maximum |MinimumMagnitude: MMin |MaximumMagnitude: GSPMmax |Beta: GSPBeta |Occurrence: GSPEarthquakeOccurrenceTimeResponse
+
+
+// Juan de Fuca (offshore) - JDFF Source
+RLocation |ObjectName: JDFF_Point01 |Latitude: 49.540 |Longitude: -126.710
+RLocation |ObjectName: JDFF_Point02 |Latitude: 48.030 |Longitude: -124.230
+RLocation |ObjectName: JDFF_Point03 |Latitude: 47.560 |Longitude: -123.900
+RLocation |ObjectName: JDFF_Point04 |Latitude: 47.000 |Longitude: -124.030
+RLocation |ObjectName: JDFF_Point05 |Latitude: 47.000 |Longitude: -124.900
+RLocation |ObjectName: JDFF_Point06 |Latitude: 47.380 |Longitude: -124.920
+RLocation |ObjectName: JDFF_Point07 |Latitude: 48.320 |Longitude: -125.800
+RLocation |ObjectName: JDFF_Point08 |Latitude: 49.240 |Longitude: -127.180
+
+RPolygonalAreaSourceModel |ObjectName: JDFFLocationModel |OutputLevel: Maximum |BoundaryLocationList: JDFF_Point01; JDFF_Point02; JDFF_Point03; JDFF_Point04; JDFF_Point05; JDFF_Point06; JDFF_Point07; JDFF_Point08 |Depth: CrustalDepth
+RContinuousRandomVariable |ObjectName: JDFFMmax |DistributionType: Lognormal (zeta, sigma) |Mean: 6.9400 |StandardDeviation: 0.18000
+RContinuousRandomVariable |ObjectName: JDFFBeta |DistributionType: Lognormal (zeta, sigma) |Mean: 1.870 |StandardDeviation: 0.22060
+RBoundedExponentialMagnitudeModel |ObjectName: JDFFMagnitudeModel |OutputLevel: Maximum |MinimumMagnitude: MMin |MaximumMagnitude: JDFFMmax |Beta: JDFFBeta |Occurrence: JDFFEarthquakeOccurrenceTimeResponse
+
+
+// Juan the Fuca (onshore) - JDFN Source
+RLocation |ObjectName: JDFN_Point01 |Latitude: 49.74 |Longitude: -126.4
+RLocation |ObjectName: JDFN_Point02 |Latitude: 48.85 |Longitude: -124.75
+RLocation |ObjectName: JDFN_Point03 |Latitude: 48.25 |Longitude: -123.83
+RLocation |ObjectName: JDFN_Point04 |Latitude: 47.87 |Longitude: -123.35
+RLocation |ObjectName: JDFN_Point05 |Latitude: 47.53 |Longitude: -123.22
+RLocation |ObjectName: JDFN_Point06 |Latitude: 47.00 |Longitude: -123.3
+RLocation |ObjectName: JDFN_Point07 |Latitude: 47.00 |Longitude: -124.03
+RLocation |ObjectName: JDFN_Point08 |Latitude: 47.56 |Longitude: -123.9
+RLocation |ObjectName: JDFN_Point09 |Latitude: 48.03 |Longitude: -124.23
+RLocation |ObjectName: JDFN_Point10 |Latitude: 49.54 |Longitude: -126.71
+
+RPolygonalAreaSourceModel |ObjectName: JDFNLocationModel |OutputLevel: Minimum |BoundaryLocationList: JDFN_Point01; JDFN_Point02; JDFN_Point03; JDFN_Point04; JDFN_Point05; JDFN_Point06; JDFN_Point07; JDFN_Point08; JDFN_Point09; JDFN_Point10 |Depth: CrustalDepth
+RContinuousRandomVariable |ObjectName: JDFNMmax |DistributionType: Lognormal (zeta, sigma) |Mean: 7.0000 |StandardDeviation: 0.20494
+RContinuousRandomVariable |ObjectName: JDFNBeta |DistributionType: Lognormal (zeta, sigma) |Mean: 2.070 |StandardDeviation: 0.28850
+RBoundedExponentialMagnitudeModel |ObjectName: JDFNMagnitudeModel |OutputLevel: Minimum |MinimumMagnitude: MMin |MaximumMagnitude: JDFNMmax |Beta: JDFNBeta |Occurrence: JDFNEarthquakeOccurrenceTimeResponse
+
+
+// AREA SOURCE - NOFR
+RLocation |ObjectName: NOFR_Point01 |Latitude: 50.07 |Longitude: -127.09
+RLocation |ObjectName: NOFR_Point02 |Latitude: 49.91 |Longitude: -126.71
+RLocation |ObjectName: NOFR_Point03 |Latitude: 49.74 |Longitude: -126.4
+RLocation |ObjectName: NOFR_Point04 |Latitude: 48.76 |Longitude: -127.93
+RLocation |ObjectName: NOFR_Point05 |Latitude: 49.15 |Longitude: -128.5
+
+RPolygonalAreaSourceModel |ObjectName: NOFRLocationModel |OutputLevel: Minimum |BoundaryLocationList:  NOFR_Point01; NOFR_Point02; NOFR_Point03; NOFR_Point04; NOFR_Point05 |Depth: CrustalDepth
+RContinuousRandomVariable |ObjectName: NOFRMmax |DistributionType: Lognormal (zeta, sigma) |Mean: 6.9400 |StandardDeviation: 0.18000
+RContinuousRandomVariable |ObjectName: NOFRBeta |DistributionType: Lognormal (zeta, sigma) |Mean: 1.570 |StandardDeviation: 0.06790
+RBoundedExponentialMagnitudeModel |ObjectName: NOFRMagnitudeModel |OutputLevel: Minimum |MinimumMagnitude: MMin |MaximumMagnitude: NOFRMmax |Beta: NOFRBeta |Occurrence: NOFREarthquakeOccurrenceTimeResponse
+
+
+// AREA SOURCE - CST
+RLocation |ObjectName: CST_Point01|Latitude: 58.700 |Longitude: -136.800
+RLocation |ObjectName: CST_Point02|Latitude: 60.000 |Longitude: -135.100
+RLocation |ObjectName: CST_Point03|Latitude: 58.000 |Longitude: -132.150
+RLocation |ObjectName: CST_Point04|Latitude: 56.000 |Longitude: -130.000
+RLocation |ObjectName: CST_Point05|Latitude: 53.100 |Longitude: -127.100
+RLocation |ObjectName: CST_Point06|Latitude: 51.900 |Longitude: -123.600
+RLocation |ObjectName: CST_Point07|Latitude: 49.910 |Longitude: -126.710
+RLocation |ObjectName: CST_Point08|Latitude: 51.500 |Longitude: -130.600
+RLocation |ObjectName: CST_Point09|Latitude: 51.950 |Longitude: -131.180
+RLocation |ObjectName: CST_Point10|Latitude: 52.600 |Longitude: -129.700
+RLocation |ObjectName: CST_Point11|Latitude: 54.400 |Longitude: -131.500
+RLocation |ObjectName: CST_Point12|Latitude: 54.500 |Longitude: -133.480
+
+RPolygonalAreaSourceModel |ObjectName: CSTLocationModel |OutputLevel: Minimum |BoundaryLocationList: CST_Point01; CST_Point02; CST_Point03; CST_Point04; CST_Point05; CST_Point06; CST_Point07; CST_Point08; CST_Point09; CST_Point10; CST_Point11; CST_Point12 |Depth: CrustalDepth
+RContinuousRandomVariable |ObjectName: CSTMmax |DistributionType: Lognormal (zeta, sigma) |Mean: 7.4800 |StandardDeviation: 0.06000
+RContinuousRandomVariable |ObjectName: CSTBeta |DistributionType: Lognormal (zeta, sigma) |Mean: 1.498 |StandardDeviation: 0.11600
+RBoundedExponentialMagnitudeModel |ObjectName: CSTMagnitudeModel |OutputLevel: Minimum |MinimumMagnitude: MMin |MaximumMagnitude: CSTMmax |Beta: CSTBeta |Occurrence: CSTEarthquakeOccurrenceTimeResponse
+
+
+// Subduction M8 - Partial Rupture
+RLocation |ObjectName: Subduction_Point01 |Latitude: 46 |Longitude: -124
+RLocation |ObjectName: Subduction_Point02 |Latitude: 47.5 |Longitude: -123.5
+RLocation |ObjectName: Subduction_Point03 |Latitude: 48 |Longitude: -124
+RLocation |ObjectName: Subduction_Point04 |Latitude: 48.75 |Longitude: -125.35
+RLocation |ObjectName: Subduction_Point05 |Latitude: 49.52 |Longitude: -126.736
+RContinuousRandomVariable |ObjectName: SubductionM8MagnitudeTheta |DistributionType: Normal (mean, stdv) |Mean: 0 |StandardDeviation: 1
+
+RConstant |ObjectName: SubductionM8Depth |CurrentValue: 25
+RMultipointLineSourceModel |ObjectName: SubductionM8LocationModel |OutputLevel: Minimum |PointLocationList: Subduction_Point01; Subduction_Point02; Subduction_Point03; Subduction_Point04; Subduction_Point05; |Depth: SubductionM8Depth
+
+RRandomVariableWithRandomParametersModel |ObjectName: SubductionM8MagnitudeModel |OutputLevel: Minimum |StandardNormalRandomVariable: SubductionM8MagnitudeTheta |DistributionType: User Defined |XPoints: 8; 8.1; 8.2; 8.3; 8.4; 8.5; 8.6; 8.7; 8.8; |PDFPoints: 1.44895829212854; 1.24196425039589; 1.05625252934035; 1.71853435403853; 1.46814976389925; 1.24545479441217; 1.06072112118186; 0.904859419752479; 1.15916924183037 |ProbabilityDistributions: theProbDist |Occurrence: SubEarthquakeOccurrenceTimeM8Response
+
+// Subduction M9 - full rupture
+RLocation |ObjectName: SubductionM9Location |Latitude: 48.1869190230411 |Longitude: -124.330902099609 |Altitude: -25
+RContinuousRandomVariable |ObjectName: SubductionM9MagnitudeTheta |DistributionType: Normal (mean, stdv) |Mean: 0 |StandardDeviation: 1
+RRandomVariableWithRandomParametersModel |ObjectName: SubductionM9MagnitudeModel |StandardNormalRandomVariable: SubductionM9MagnitudeTheta |DistributionType: User Defined |XPoints: 8.8; 9; 9.2; |PDFPoints: 1.25000117187464; 3.74999882812538; 1.25000117187464; |ProbabilityDistributions: theProbDist |Occurrence: SubEarthquakeOccurrenceTimeM9Response |OutputLevel: Minimum
+
+
+// Earthquake Intensity Models
+
+RInHouseLinearSolver |ObjectName: theLinearSolver
+
+RBooreAtkinson2008IntensityModel  |ObjectName: CrustalIntensityModel |MagnitudeList: CASRMagnitudeModelResponse; JDFFMagnitudeModelResponse; JDFNMagnitudeModelResponse; NOFRMagnitudeModelResponse; CSTMagnitudeModelResponse |HypocentreList: CASRLocationModelResponse ; JDFFLocationModelResponse; JDFNLocationModelResponse; NOFRLocationModelResponse; CSTLocationModelResponse |FaultType: Unspecified  |LinearSolver: theLinearSolver
+
+RAtkinsonBoore2003IntensityModel |ObjectName: SubcrustalIntensityModel |OutputLevel: Minimum |MagnitudeList: GSPMagnitudeModelResponse; |HypocentreList: GSPLocationModelResponse; |EventType: InSlab |ResponseType: Sa |LinearSolver: theLinearSolver
+
+RAtkinsonBoore2003IntensityModel |ObjectName: SubductionIntensityModel |OutputLevel: Minimum |MagnitudeList: SubductionM9MagnitudeModelResponse; SubductionM8MagnitudeModelResponse; |HypocentreList: SubductionM9Location; SubductionM8LocationModelResponse; |EventType: Interface |ResponseType: Sa |LinearSolver: theLinearSolver
+
+
+//*************************************************************************************
+//********************************** LIFECYCLE MODELS *********************************
+//*************************************************************************************
+
+
+// Construction impact model
+RStevesConstructionImpactModel |ObjectName: constructionImpactModel |BIM: theBIM 
+
+// Manufacturing impact model
+RStevesManufacturingImpactModel |ObjectName: manufacturingImpactModel |BIM: theBIM 
+
+// Operations impact model
+RStevesOperationImpactModel |ObjectName: operationsImpactModel |BIM: theBIM 
+
+// Damage repair impact model
+RSimpleBuildingLossModel |ObjectName: repairImpactModel |StructuralDamage: theBuildingDamageModelStructuralDamageRatioResponse |NSDriftDamage: theBuildingDamageModelNonstructuralDriftDamageRatioResponse |NSAccelerationDamage: theBuildingDamageModelNonstructuralAccelerationDamageRatioResponse |ContentDamageRatios: theBuildingDamageModelContentDamageRatioResponse |PeakDrift: theBuildingResponseModelPeakDriftResponse |BuildingValue: 11750000.0 |BIM: theBIM |OutputLevel: Medium 
+
+// Demolition impact model
+RStevesDemolitionImpactModel |ObjectName: demolitionImpactModel |BIM: theBIM  
+
+// Cost of water model
+RCostOfWaterModel |ObjectName: waterToCostModel |InputParameterList: manufacturingImpactModelWaterResponse; constructionImpactModelWaterResponse; operationsImpactModelWaterResponse
+
+// Cost of energy model
+RCostOfEnergyModel |ObjectName: energyToCostModel |InputParameterList: manufacturingImpactModelEnergyResponse; constructionImpactModelEnergyResponse; operationsImpactModelEnergyResponse; demolitionImpactModelEnergyResponse; waterToCostModelEnergyResponse; 
+
+// Emissions from energy consumption model
+REmissionsFromEnergyModel |ObjectName: emissionsFromEnergyModel |InputParameterList: manufacturingImpactModelEnergyResponse; constructionImpactModelEnergyResponse; operationsImpactModelEnergyResponse; demolitionImpactModelEnergyResponse; waterToCostModelEnergyResponse; 
+
+// Cost of emissions model
+RCostOfEmissionsModel |ObjectName: emissionsToCostModel |InputParameterList: manufacturingImpactModelEmissionsResponse; constructionImpactModelEmissionsResponse; operationsImpactModelEmissionsResponse; demolitionImpactModelEmissionsResponse; emissionsFromEnergyModelResponse
+
+// Cost of downtime model
+RCostOfDowntimeModel |ObjectName: downtimeToCostModel |InputParameter: repairImpactModelRepairTime |BIM: theBIM
+
+// Cost of injuries and deaths model
+RStevesHumanImpactModel |ObjectName: humanImpactModel |BIM: theBIM |InputParameter: theBuildingResponseModelPeakDriftResponse
+
+
+//*************************************************************************************
+//******************************** ORCHESTRATING MODELS *******************************
+//*************************************************************************************
+
+// Create a dummy structural analysis model that will not be used here
+RStructuralAnalysisModel |ObjectName: theSAModel |BIM: theBIM  
+
+// Structural Analysis Model
+RSimpleBuildingResponseModel |ObjectName: theBuildingResponseModel |IntensityList: SubductionIntensityModelResponse; SubcrustalIntensityModelResponse; CrustalIntensityModelResponse |BIM: theBIM 
+
+RSimpleBuildingDamageModel |ObjectName: theBuildingDamageModel |PeakDrift: theBuildingResponseModelPeakDriftResponse |PeakAcceleration: theBuildingResponseModelPeakAccelerationResponse |ResidualDrift: theBuildingResponseModelResidualDriftRatioResponse |BIM: theBIM 
+
+
+// Scenario model
+RScenarioModel |ObjectName: scenarioModel |InputParameterList: manufacturingImpactModelCostResponse; constructionImpactModelCostResponse; operationsImpactModelCostResponse; demolitionImpactModelCostResponse; downtimeToCostModelResponse; emissionsToCostModelResponse; waterToCostModelResponse; energyToCostModelResponse; humanImpactModelResponse; repairImpactModelResponse |StartTime: startTime |EndTime: endTime |MaxTimeGap: 36500 |RealInterestRate: 0.03 |OutputLevel: Minimum
+
+// Sampling model
+RIndependenceProbabilityTransformation |ObjectName: theProbTransformation  |ProbabilityDistributions: theProbDist 
+RInHouseRandomNumberGenerator          |ObjectName: theGenerator
+RInHouseProbabilityDistributions       |ObjectName: theProbDist
+
+RSamplingModel |ObjectName: theSamplingModel |OutputLevel: Maximum  |InputParameter: scenarioModelResponse |Threshold: 10000000.0 |ProbabilityTransformation: theProbTransformation |TargetCov: 0.0000002 |MaxSamples: 1000 |PlotInterval: 100 |RandomNumberGenerator: theGenerator 
+
+

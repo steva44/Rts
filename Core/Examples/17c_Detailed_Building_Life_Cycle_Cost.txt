@@ -1,0 +1,117 @@
+
+
+// CREATE THE OFFICIAL INTERNAL TIME HERE IF YOU WANT TO GIVE IT A SPECIFIC VALUE
+// RTime |ObjectName: officialCurrentTime |Time: 2017-05-28 17:00:00.000
+
+
+// SET THE MESH OPTION, I.E., THE OVERALL MODEL GRANULARITY
+RConstant |ObjectName: officialMeshOption |CurrentValue: 3 
+
+
+// TIME PERIOD CONSIDERED
+RTime |ObjectName: startTime |Time: 2017-01-01 17:00:00.000
+RTime |ObjectName: endTime   |Time: 2067-01-01 17:00:00.000
+
+
+// EARTHQUAKE OCCURRENCE 
+RTime |ObjectName: earthquakeOccurrenceTime |Time: 2047-05-28 17:00:00.000
+RFixedTimeOccurrenceModel |ObjectName: earthquakeOccurrenceModel |OccurrenceTime: earthquakeOccurrenceTime
+//RPoissonPointProcessOccurrenceModel |ObjectName: earthquakeOccurrenceModel |StartTime: startTime |EndTime: endTime |ReturnPeriodInYears: 300
+
+
+// EARTHQUAKE LOCATION 
+RLocation | ObjectName: sourceCorner1  |Latitude: 49.295448 |Longitude: -123.265801
+RLocation | ObjectName: sourceCorner2  |Latitude: 49.125079 |Longitude: -123.265801
+RLocation | ObjectName: sourceCorner3  |Latitude: 49.288769 |Longitude: -122.811470
+RLocation | ObjectName: sourceCorner4  |Latitude: 49.119271 |Longitude: -122.811470
+RConstant |ObjectName: earthquakeDepth |CurrentValue: 0
+RPolygonalAreaSourceModel |ObjectName: earthquakeLocationModel |BoundaryLocationList:  sourceCorner1 ; sourceCorner2 ; sourceCorner3 ; sourceCorner4 ; |Depth: earthquakeDepth
+
+
+// EARTHQUAKE MAGNITUDE
+RConstant |ObjectName: minMagnitude |CurrentValue: 5.0
+RConstant |ObjectName: maxMagnitude |CurrentValue: 8.0
+RContinuousRandomVariable |ObjectName: earthquakeBeta |DistributionType: Lognormal (zeta, sigma) |Mean: 1.015 |StandardDeviation: 0.37760
+RBoundedExponentialMagnitudeModel |ObjectName: earthquakeMagnitudeModel |MinimumMagnitude: minMagnitude |MaximumMagnitude: maxMagnitude |Beta: earthquakeBeta |Occurrence: earthquakeOccurrenceModelResponse
+
+
+// EARTHQUAKE INTENSITY
+RBooreAtkinson2008IntensityModel |ObjectName: earthquakeIntensityModel |MagnitudeList: earthquakeMagnitudeModelResponse; |HypocentreList: earthquakeLocationModelResponse; |FaultType: Unspecified |LinearSolver: theLinearSolver
+
+
+// SNOW STORM
+RPoissonPointProcessOccurrenceModel |ObjectName: snowStormOccurrenceModel |StartTime: startTime |EndTime: endTime |ReturnPeriodInYears: 10
+RContinuousRandomVariable |ObjectName: snowStormMagnitudeVariable |DistributionType: Lognormal (zeta, sigma) |Mean: 2.0  |StandardDeviation: 0.2
+RGivenMagnitudeModel   |ObjectName: snowStormMagnitudeModel |Magnitude: snowStormMagnitudeVariable |Occurrence: snowStormOccurrenceModelResponse
+RSimpleSnowLoadModel |ObjectName: snowIntensityModel |SnowStormMagnitude: snowStormMagnitudeModelResponse 
+
+
+// BUILDING (here no BIM)
+RLocation | ObjectName: buildingLocation  |Latitude: 49.295448 |Longitude: -123.265801 
+RBIM |ObjectName: theBIM |Location: buildingLocation |TimeOfConstruction: startTime  |TimeOfDemolition: endTime |LoadBearingSystem: MomentFrame |ConstructionMaterial: ReinforcedConcrete |NumberOfStoreys: 3 |FootprintArea: 691 |OccupancyType: Services |PlanIrregularity: true |VerticalIrregularity: false |SoftStorey: false |Opening: false |ShortColumn: false |Pounding: false |Retrofitted: false
+RDetailedBuildingModel |ObjectName: stevesSaloon |BIM: theBIM  |StructuralAnalysis: theStaticAnalysis |OutputLevel: Maximum  |HazardList: snowIntensityModelResponse; earthquakeIntensityModelResponse
+
+
+
+// POINTS (Automatically fixed at z=0)
+RPoint |ObjectName: pointG1 |XCoordinate: 0  |YCoordinate: 0  |ZCoordinate: 0
+RPoint |ObjectName: pointG2 |XCoordinate: 10 |YCoordinate: 0  |ZCoordinate: 0
+RPoint |ObjectName: pointG3 |XCoordinate: 10 |YCoordinate: 10 |ZCoordinate: 0
+RPoint |ObjectName: pointG4 |XCoordinate: 0  |YCoordinate: 10 |ZCoordinate: 0
+
+RPoint |ObjectName: pointR1 |XCoordinate: 0  |YCoordinate: 0  |ZCoordinate: 5
+RPoint |ObjectName: pointR2 |XCoordinate: 10 |YCoordinate: 0  |ZCoordinate: 5
+RPoint |ObjectName: pointR3 |XCoordinate: 10 |YCoordinate: 10 |ZCoordinate: 5
+RPoint |ObjectName: pointR4 |XCoordinate: 0  |YCoordinate: 10 |ZCoordinate: 5
+
+
+
+// DECISION VARIABLES
+RContinuousDecisionVariable |ObjectName: theColumnDimension |CurrentValue: 0.4
+RContinuousDecisionVariable |ObjectName: theRoofThickness   |CurrentValue: 0.2
+
+
+// COLUMNS
+RConstant |ObjectName: theReinforcementRatio |CurrentValue: 0.02
+RCircularRCColumnComponent   |ObjectName: concreteColumn1 |Point1: pointG1 |Point2: pointR1 |Diameter: theColumnDimension |ConcreteStrength: C30 |ReinforcementRatio: theReinforcementRatio
+RCircularRCColumnComponent   |ObjectName: concreteColumn2 |Point1: pointG2 |Point2: pointR2 |Diameter: theColumnDimension |ConcreteStrength: C30 |ReinforcementRatio: theReinforcementRatio 
+RCircularRCColumnComponent   |ObjectName: concreteColumn3 |Point1: pointG3 |Point2: pointR3 |Diameter: theColumnDimension |ConcreteStrength: C30 |ReinforcementRatio: theReinforcementRatio 
+RCircularRCColumnComponent   |ObjectName: concreteColumn4 |Point1: pointG4 |Point2: pointR4 |Diameter: theColumnDimension |ConcreteStrength: C30 |ReinforcementRatio: theReinforcementRatio 
+
+
+// SLAB
+RRCSlabComponent |ObjectName: concreteRoof    |Point1: pointR1 |Point2: pointR2 |Point3: pointR3 |Point4: pointR4 |Thickness: theRoofThickness |ConcreteStrength: C30 |ReinforcementRatio: 0.02
+
+
+// WALLS
+//RNonLoadBearingWallComponent |ObjectName: wall1  |Point1: pointG1 |Point2: pointG2 |Point3: pointR2 |Point4: pointR1
+//RNonLoadBearingWallComponent |ObjectName: wall2  |Point1: pointG2 |Point2: pointG3 |Point3: pointR3 |Point4: pointR2
+//RNonLoadBearingWallComponent |ObjectName: wall3  |Point1: pointG3 |Point2: pointG4 |Point3: pointR4 |Point4: pointR3
+//RNonLoadBearingWallComponent |ObjectName: wall4  |Point1: pointG4 |Point2: pointG1 |Point3: pointR1 |Point4: pointR4
+
+
+// METHODS
+RBasicCholeskyDecomposition            |ObjectName: theDecomposition 
+RCholeskyLinearSolver                  |ObjectName: theLinearSolver        |CholeskyDecomposition: theDecomposition
+RConnectivityTableAssembler            |ObjectName: theAssembler 
+RLinearStaticStructuralAnalysis        |ObjectName: theStaticAnalysis      |Assembler: theAssembler |LinearSolver: theLinearSolver 
+RHLRFSearchDirection                   |ObjectName: theFORMSearchDirection
+RFixedLineSearchAlgorithm              |ObjectName: theLineSearchAlgorithm |FixedResult: 1.0
+RADKZhangMeritFunction                 |ObjectName: theMeritFunction       |FactorC: 10.0
+RStandardFORMConvergenceCheck          |ObjectName: theConvergenceCheck    |Tolerance1: 0.001 |Tolerance2: 0.001
+RIndependenceProbabilityTransformation |ObjectName: theProbTransformation  |ProbabilityDistributions: theProbDist 
+RInHouseRandomNumberGenerator          |ObjectName: theGenerator
+RInHouseProbabilityDistributions       |ObjectName: theProbDist
+
+
+// ORCHESTRATING ANALYSIS MODELS
+RScenarioModel |ObjectName: scenarioModel |InputParameterList: stevesSaloonResponse |StartTime: startTime |EndTime: endTime |MaxTimeGap: 1000000 |RealInterestRate: 0.05 |OutputLevel: Maximum
+
+RSamplingModel |ObjectName: theSamplingModel |OutputLevel: Minimum  |InputParameter: scenarioModelResponse |Threshold: 10000.0 |ProbabilityTransformation: theProbTransformation |TargetCov: 0.0000002 |MaxSamples: 2 |PlotInterval: 10 |RandomNumberGenerator: theGenerator
+
+RDownhillSimplexOptimizationAlgorithm |ObjectName: theOptimizationAlgorithm |OutputLevel: Maximum |Alpha: 1.0 |Gamma: 2 |Rho: -0.5 |Sigma: 0.5 |MaxSteps: 50 |Tolerance: 0.001 |Delay: 0.0
+
+ROptimizationModel |ObjectName: myOptModel |OutputLevel: Maximum |Objective: theSamplingModelMeanResponse |OptimizationAlgorithm: theOptimizationAlgorithm
+
+
+

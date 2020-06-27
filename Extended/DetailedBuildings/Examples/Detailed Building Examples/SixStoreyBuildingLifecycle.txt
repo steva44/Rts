@@ -1,0 +1,164 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//															//
+//															//
+//	Detailed lifecycle analysis of a six-storey building using BIM							//
+//	This example employs a finite element model and detailed damage and repair models				//
+//															//
+//															//
+//  	Stevan Gavrilovic, University of British Columbia								//
+//															//
+//  	All units in N, m, kg, Pa											//
+//															//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//**** Integrator ****
+
+RNewmarkIntegrator |ObjectName: theIntegrator |Gamma: 0.5 |Beta: 0.25
+
+
+//**** Constraint Handler ****
+
+RTransformationConstraintHandler |ObjectName: theConstraintHandler
+
+
+//**** DOF Numberer ****
+
+RDOFNumberer |ObjectName: theDOFNumberer |NumberingScheme: RCM
+
+
+//**** Convergence Test ****
+
+RCTestNormDispIncr |ObjectName: theConvergenceTest |Tolerance: 1.0e-6 |MaxNumberIncrements: 500
+
+
+//**** Solver ****
+
+RMumpsParallelSOE |ObjectName: theSolver
+
+
+//**** Equation Solution Algorithm ****
+
+RKrylovNewtonEquationSolutionAlgorithm |ObjectName: theSolutionAlgo |ConvergenceTest: theConvergenceTest
+
+
+//**** Building Information ****
+
+// The time of construction (start time) and the time of demolition (end time)
+RTime |ObjectName: startTime |Time: 2017-01-01 17:00:00.000
+RTime |ObjectName: endTime |Time: 2067-01-01 17:00:00.000
+
+RLocation | ObjectName: buildingLocation |Latitude: 49.268434 |Longitude: -123.168222 
+
+RBIM |ObjectName: theBIM |Location: buildingLocation |IfcFile: StevesBuilding.ifc |TimeOfConstruction: startTime  |TimeOfDemolition: endTime |NumberOfHouseHolds: 40 |BuildingType: C2M |BuildingOccupancyClass: RES3
+
+//**** Hazards and Loading [N] ****
+
+// Earthquake occurence 
+RUniformOccurrenceModel |ObjectName: earthquakeOccurrenceModel |StartTime: startTime |EndTime: endTime |NumberOfOccurrences: 1
+
+// Earthquake depth 
+RConstant |ObjectName: earthquakeDepth |CurrentValue: 0.1
+
+// Earthquake location about 18 km south of Gibsons in the Georgia Straight ~25 km from site
+RLocation |ObjectName: sourcePoint   |Latitude: 49.236574 |Longitude: -123.575318
+
+RFixedSourceModel |ObjectName: earthquakeLocationModel |Location: sourcePoint |Depth: earthquakeDepth
+
+// Earthquake magnitude 
+RGivenMagnitudeModel |ObjectName: earthquakeMagnitudeModel |Magnitude: 7.3 |Occurrence: earthquakeOccurrenceModelResponse
+
+// Earthquake intensity 
+RInHouseLinearSolver |ObjectName: earthquakeIntensityModelSolver
+RBooreAtkinson2008IntensityModel |ObjectName: earthquakeIntensityModel |MagnitudeList: earthquakeMagnitudeModelResponse; |HypocentreList: earthquakeLocationModelResponse; |FaultType: Unspecified |LinearSolver: earthquakeIntensityModelSolver |BIM: theBIM
+
+// Earthquake time series 
+RPathTimeSeries |ObjectName: theTimeSeries1 |FileName: OlympiaShort90Decim.dat |TimeInterval: 0.02 |ScaleFactor: 1.0
+RPathTimeSeries |ObjectName: theTimeSeries2 |FileName: OlympiaShort360Decim.dat |TimeInterval: 0.02 |ScaleFactor: 1.0
+RPathTimeSeries |ObjectName: theTimeSeries3 |FileName: OlympiaShortVDecim.dat |TimeInterval: 0.02 |ScaleFactor: 1.0
+
+// Tags corresponding to the SeriesDirection options:
+// 1 - corresponds to translation along the global X axis
+// 2 - corresponds to translation along the global Y axis
+// 3 - corresponds to translation along the global Z axis
+// 4 - corresponds to rotation about the global X axis
+// 5 - corresponds to rotation about the global Y axis
+// 6 - corresponds to rotation about the global Z axis
+
+// Apply the series in the x, y, and z directions
+RUniformExcitationPattern |ObjectName: theEQLoadPatternX |AccelTimeSeries: theTimeSeries1 |SeriesDirection: 1 |ScaleFactor: 1.0
+RUniformExcitationPattern |ObjectName: theEQLoadPatternY |AccelTimeSeries: theTimeSeries2 |SeriesDirection: 2 |ScaleFactor: 1.0
+RUniformExcitationPattern |ObjectName: theEQLoadPatternVert |AccelTimeSeries: theTimeSeries3 |SeriesDirection: 3 |ScaleFactor: 1.0
+ 
+RLoadPatternModel |ObjectName: theEarthquakeHazard |LoadPatterns: theEQLoadPatternX; theEQLoadPatternY; theEQLoadPatternVert |Occurrence: earthquakeOccurrenceModelResponse |ScalingModel: earthquakeIntensityModelResponse |ScaleFactor: 9.81
+
+
+//**** Structural Analysis Method ****
+
+// The NumberSteps parameter is the number of analysis steps that will be performed with a given time-step dt
+RInelasticDynamicStructuralAnalysis |ObjectName: theStructuralAnalysisType |OutputLevel: Maximum |ConstraintHandler: theConstraintHandler |DOFNumberer: theDOFNumberer |LinearSOESolver: theSolver |Integrator: theIntegrator |ConvergenceTest: theConvergenceTest |EquationSolutionAlgorithm: theSolutionAlgo |VisualDamageModel: theVisualDamageModel |TimeStep: 0.02 
+//|NumberSteps: 20
+
+
+//*************************************************************************************
+//********************************** LIFECYCLE MODELS *********************************
+//*************************************************************************************
+
+// Construction impact model
+RStevesConstructionImpactModel |ObjectName: constructionImpactModel |BIM: theBIM 
+
+// Manufacturing impact model
+RStevesManufacturingImpactModel |ObjectName: manufacturingImpactModel |BIM: theBIM 
+
+// Operations impact model
+RStevesOperationImpactModel |ObjectName: operationsImpactModel |BIM: theBIM 
+
+// Damage repair impact model
+RStevesRepairImpactModel |ObjectName: repairImpactModel |BIM: theBIM |InputParameter: theSAModelResponse
+
+// Demolition impact model
+RStevesDemolitionImpactModel |ObjectName: demolitionImpactModel |BIM: theBIM  
+
+// Cost of water model
+RCostOfWaterModel |ObjectName: waterToCostModel |InputParameterList: repairImpactModelWaterResponse; manufacturingImpactModelWaterResponse; constructionImpactModelWaterResponse; operationsImpactModelWaterResponse
+
+// Cost of energy model
+RCostOfEnergyModel |ObjectName: energyToCostModel |InputParameterList: manufacturingImpactModelEnergyResponse; constructionImpactModelEnergyResponse; operationsImpactModelEnergyResponse; repairImpactModelEnergyResponse; demolitionImpactModelEnergyResponse; waterToCostModelEnergyResponse; 
+
+// Emissions from energy consumption model
+REmissionsFromEnergyModel |ObjectName: emissionsFromEnergyModel |InputParameterList: manufacturingImpactModelEnergyResponse; constructionImpactModelEnergyResponse; operationsImpactModelEnergyResponse; repairImpactModelEnergyResponse; demolitionImpactModelEnergyResponse; waterToCostModelEnergyResponse; 
+
+// Cost of emissions model
+RCostOfEmissionsModel |ObjectName: emissionsToCostModel |InputParameterList: manufacturingImpactModelEmissionsResponse; constructionImpactModelEmissionsResponse; operationsImpactModelEmissionsResponse; repairImpactModelEmissionsResponse; demolitionImpactModelEmissionsResponse; emissionsFromEnergyModelResponse
+
+// Cost of downtime model
+RCostOfDowntimeModel |ObjectName: downtimeToCostModel |InputParameter: repairImpactModelTimeResponse |BIM: theBIM
+
+// Cost of injuries and deaths model
+RStevesHumanImpactModel |ObjectName: humanImpactModel |BIM: theBIM |InputParameter: theSAModelResponse
+
+
+//*************************************************************************************
+//******************************** ORCHESTRATING MODELS *******************************
+//*************************************************************************************
+
+// Structural Analysis Model
+RStructuralAnalysisModel |ObjectName: theSAModel |StructuralAnalysis: theStructuralAnalysisType |BIM: theBIM |Hazards: theEarthquakeHazard;
+
+// Visual Damage Model
+RVisualDamageModel |ObjectName: theVisualDamageModel |InputParameter: theSAModelResponse |OutputLevel: Maximum 
+
+
+// Scenario model
+RScenarioModel |ObjectName: scenarioModel |InputParameterList: manufacturingImpactModelCostResponse; constructionImpactModelCostResponse; operationsImpactModelCostResponse; repairImpactModelCostResponse; demolitionImpactModelCostResponse; downtimeToCostModelResponse; emissionsToCostModelResponse; waterToCostModelResponse; energyToCostModelResponse; humanImpactModelResponse |StartTime: startTime |EndTime: endTime |MaxTimeGap: 365 |RealInterestRate: 0.03 |OutputLevel: Medium
+
+// Sampling model
+RInHouseProbabilityDistributions |ObjectName: theProbDist
+RIndependenceProbabilityTransformation |ObjectName: theProbTransformation |ProbabilityDistributions: theProbDist 
+RInHouseRandomNumberGenerator |ObjectName: theGenerator
+
+RSamplingModel |ObjectName: theSamplingModel |OutputLevel: Maximum |InputParameter: scenarioModelResponse |Threshold: 0.0 |ProbabilityTransformation: theProbTransformation |TargetCov: 0.0000002 |MaxSamples: 100 |PlotInterval: 10 |RandomNumberGenerator: theGenerator 
+
+
+
+

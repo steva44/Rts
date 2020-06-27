@@ -1,0 +1,57 @@
+
+
+// RANDOM VARIABLES
+RContinuousRandomVariable |ObjectName: x1 |DistributionType: Lognormal (zeta, sigma) |Mean: 200     |CoefficientOfVariation: 0.1  |ProbabilityDistributions: myProbDist 
+RContinuousRandomVariable |ObjectName: x2 |DistributionType: Lognormal (zeta, sigma) |Mean: 200     |CoefficientOfVariation: 0.1  |ProbabilityDistributions: myProbDist 
+RContinuousRandomVariable |ObjectName: x3 |DistributionType: Lognormal (zeta, sigma) |Mean: 0.00001 |CoefficientOfVariation: 0.1  |ProbabilityDistributions: myProbDist 
+RContinuousRandomVariable |ObjectName: L  |DistributionType: Lognormal (zeta, sigma) |Mean: 3       |CoefficientOfVariation: 0.1  |ProbabilityDistributions: myProbDist 
+RContinuousRandomVariable |ObjectName: P  |DistributionType: Lognormal (zeta, sigma) |Mean: 2000    |CoefficientOfVariation: 0.1  |ProbabilityDistributions: myProbDist 
+
+
+// DECISION VARIABLES
+RContinuousDecisionVariable |ObjectName: d |CurrentValue: 1
+
+
+
+
+// GENERAL TOOLS
+RInHouseRandomNumberGenerator          |ObjectName: myGenerator
+RInHouseProbabilityDistributions       |ObjectName: myProbDist             |OutputLevel: Maximum 
+
+
+
+// FORM TOOLS
+RIndependenceProbabilityTransformation |ObjectName: myProbTransformation   |OutputLevel: Minimum |ProbabilityDistributions: myProbDist 
+RStandardFORMConvergenceCheck          |ObjectName: myConvergenceCheck     |OutputLevel: Minimum |Tolerance1: 0.001     |Tolerance2: 0.001
+RADKZhangMeritFunction                 |ObjectName: myMeritFunction        |OutputLevel: Minimum |Multiplier: 2 |Adder: 10 |Factor: 0.5
+RArmijoStepSize                        |ObjectName: myFORMStepSize |ProbabilityTransformation: myProbTransformation |MeritFunction: myMeritFunction |MaximumReductions: 100
+//RFixedStepSize                       |ObjectName: myFORMStepSize |StepSize: 1.0
+RHLRFSearchDirection                   |ObjectName: myFORMSearchDirection  |OutputLevel: Minimum 
+
+
+// OPTIMIZATION TOOLS
+RGradientNormConvergenceCheck          |ObjectName: theConvergenceCheck    |OutputLevel: Minimum |Tolerance: 0.05
+
+RSlowStartStepSize                     |ObjectName: myOptiStepSize         |OutputLevel: Minimum |StartStepSize: 0.01 |FinalStepSize: 1.0 |RampUpSteps: 5
+RBFGSSearchDirection                   |ObjectName: myOptiSearchDirection  |OutputLevel: Minimum 
+
+//RSteepestDescentSearchDirection        |ObjectName: myOptiSearchDirection  |OutputLevel: Minimum 
+//RFixedStepSize                         |ObjectName: myOptiStepSize         |OutputLevel: Minimum |StepSize: 1.0
+
+
+
+
+
+// MODELS
+RSaeidsObjectiveModel |ObjectName: myTotalCost |x1: x1 |x2: x2 |x3: x3 |L: L |P: P |d: d
+
+RFOSMModel                   |ObjectName: myFOSMModel         |OutputLevel: Minimum |InputParameter: myTotalCostResponse |Threshold: 21000.0  |GradientMethod: Direct Differentiation
+
+RFORMModel                   |ObjectName: myFORMModel         |OutputLevel: Medium |InputParameter: myTotalCostResponse |Threshold: 21000.0 |ProbabilityTransformation: myProbTransformation |SearchDirection: myFORMSearchDirection |StepSize: myFORMStepSize |ConvergenceCheck: myConvergenceCheck |MaxSteps: 50  |GradientMethod: Direct Differentiation
+
+RRiskModel                   |ObjectName: myRiskModel         |OutputLevel: Medium    |Input: myFOSMModelResponse |CostIncrement: 10.0 |ProbabilityTolerance: 0.005
+
+ROptimizationModel           |ObjectName: myOptimizationModel |OutputLevel: Maximum |Objective: myRiskModelResponse |SearchDirection: myOptiSearchDirection |StepSize: myOptiStepSize |ConvergenceCheck: theConvergenceCheck |MaxSteps: 30 |GradientMethod: Direct Differentiation
+
+
+RSamplingModel |ObjectName: theSamplingModel |OutputLevel: Medium  |InputParameter: myTotalCostResponse |Threshold: 0.0 |ProbabilityTransformation: myProbTransformation   |MaxSamples: 1000 |PlotInterval: 100 |RandomNumberGenerator: myGenerator

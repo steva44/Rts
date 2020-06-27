@@ -1,0 +1,96 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//															//
+//															//
+//	Static inelastic reinforced concrete shear wall	example								//
+//															//
+//															//
+//  	Stevan Gavrilovic, University of British Columbia								//
+//															//
+//  	All units in N, m, kg, Pa											//
+//															//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//**** Integrator ****
+
+// The DeltaLambda parameter can be used along with the MaxSteps parameter in the structural analysis method to apply a fraction of the total load to the structure
+// The load is applied incrementally by adding DeltaLambda*Load at every step
+// The fraction of the total load applied at the end of the analysis will be DeltaLambda*NumberIncrements
+// For example, if you want the final load to be 0.6 of the total load, set DeltaLambda:0.1 and NumberIncrements:6
+RLoadControlIntegrator |ObjectName: theIntegrator |DeltaLambda: 1.0 |NumberIncrements: 1 |MinLambda: 1.0 |Maxlambda: 1.0
+
+
+//**** Constraint Handler ****
+
+RTransformationConstraintHandler |ObjectName: theConstraintHandler
+
+
+//**** DOF Numberer ****
+
+RDOFNumberer |ObjectName: theDOFNumberer |NumberingScheme: RCM
+
+
+//**** Convergence Test ****
+
+RCTestNormDispIncr |ObjectName: theConvergenceTest |Tolerance: 1.0e-6 |MaxNumberIncrements: 250
+
+
+//**** Solver ****
+
+RMumpsParallelSOE |ObjectName: theSolver
+
+
+//**** Equation Solution Algorithm ****
+
+RKrylovNewtonEquationSolutionAlgorithm |ObjectName: theSolutionAlgo |ConvergenceTest: theConvergenceTest
+
+
+//**** Hazards and Loading [N] ****
+
+RContinuousRandomVariable |ObjectName: pointLoadParameter |DistributionType: Normal (mean, stdv) |Mean: -10000000 |StandardDeviation: 100
+RPointLoad |ObjectName: pointLoad |InputParameter: pointLoadParameter
+
+RLinearSeries |ObjectName: theTimeSeries 
+RLoadPattern |ObjectName: theLoadPattern |TimeSeries: theTimeSeries
+
+
+//**** Boundary Conditions ****
+
+RPoint |ObjectName: pointA |XCoordinate: -10 |YCoordinate: -10 |ZCoordinate: 0
+RPoint |ObjectName: pointB |XCoordinate:  10 |YCoordinate: -10 |ZCoordinate: 0 
+RPoint |ObjectName: pointC |XCoordinate:  10 |YCoordinate:  10 |ZCoordinate: 0 
+RPoint |ObjectName: pointD |XCoordinate: -10 |YCoordinate:  10 |ZCoordinate: 0 
+
+RFixedPlaneBoundaryCondition |ObjectName: ground |Point1: pointA |Point2: pointB |Point3: pointC |Point4: pointD
+
+//**** Component Geometry [m] ****
+
+RPoint |ObjectName: point1 |XCoordinate: 0 |YCoordinate: 0 |ZCoordinate: 0	
+RPoint |ObjectName: point2 |XCoordinate: 4 |YCoordinate: 0 |ZCoordinate: 0 	
+RPoint |ObjectName: point3 |XCoordinate: 4 |YCoordinate: 0 |ZCoordinate: 3 |XForce: pointLoad 
+RPoint |ObjectName: point4 |XCoordinate: 0 |YCoordinate: 0 |ZCoordinate: 3 |XForce: pointLoad 
+
+
+// Wall thickness 
+RConstant |ObjectName: shearWallThickness |CurrentValue: 0.2
+
+
+//**** Components ****
+RRCShearWallComponent |ObjectName: shearWall1 |Point1: point1 |Point2: point2 |Point3: point3 |Point4: point4 |Thickness: shearWallThickness |MeshOption: 3	
+
+
+//**** Structural Analysis Method ****
+
+RLinearStaticStructuralAnalysis	|ObjectName: theStructuralAnalysisType |OutputLevel: Maximum |ConstraintHandler: theConstraintHandler |DOFNumberer: theDOFNumberer |LinearSOESolver: theSolver |Integrator: theIntegrator
+
+
+//*************************************************************************************
+//********************************** ORCHESTRATING MODELS *****************************
+//*************************************************************************************
+
+
+// Structural Analysis Model
+RStructuralAnalysisModel |ObjectName: theSAModel |StructuralAnalysis: theStructuralAnalysisType |LoadPattern: theLoadPattern 
+
+
+

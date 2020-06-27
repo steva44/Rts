@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Tools/Database/costDatabase.csv</file>
+        <file>Tools/Database/SteelSectionDatabase/WSECTTABLE.csv</file>
+        <file>Tools/Database/SteelSectionDatabase/CSECTTABLE.csv</file>
+        <file>Tools/Database/SteelSectionDatabase/WTSECTTABLE.csv</file>
+        <file>Tools/Database/SteelSectionDatabase/HSSPIPESECTTABLE.csv</file>
+        <file>Tools/Database/SteelSectionDatabase/HSSRECTSECTTABLE.csv</file>
+        <file>Tools/Database/SteelSectionDatabase/LSECTTABLE.csv</file>
+    </qresource>
+</RCC>

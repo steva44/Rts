@@ -1,0 +1,54 @@
+
+// This file is part of Rts, the software framework developed in the research group of 
+// Professor Terje Haukaas at the University of British Columbia in Vancouver, Canada
+// Web: terje.civil.ubc.ca  Email: terje@civil.ubc.ca
+
+
+
+
+// SEARCH DIRECTION
+RHLRFSearchDirection             |ObjectName: mySearchDirection
+
+
+// LINE SEARCH ALGORITHM
+//RFixedLineSearchAlgorithm           |ObjectName: myLineSearchAlgorithm       |OutputLevel: Maximum |FixedResult: 1.0
+RArmijoLineSearchAlgorithm        |ObjectName: myLineSearchAlgorithm       |OutputLevel: Maximum |Base: 0.5
+//RGoldenSectionLineSearchAlgorithm |ObjectName: myLineSearchAlgorithm       |OutputLevel: Maximum |LowerBound: 0 |UpperBound: 10     |MaxIterations: 100 |Tolerance: 0.0001
+//RBisectionLineSearchAlgorithm     |ObjectName: theBisectionSearchAlgorithm |OutputLevel: Maximum |LowerBound: 0 |UpperBound: 10     |MaxIterations: 100 |Tolerance: 0.01 |Delay: 1.0
+//RNewtonLineSearchAlgorithm        |ObjectName: theNewtonSearchAlgorithm    |OutputLevel: Maximum |StartPoint: 0 |MaxIterations: 100 |Tolerance: 0.01    |Delay: 0.0
+//RSecantLineSearchAlgorithm        |ObjectName: theSecantSearchAlgorithm    |OutputLevel: Maximum |LowerBound: 0 |UpperBound: 10     |MaxIterations: 100 |Tolerance: 0.01 |Delay: 1.0
+
+
+// MERIT FUNCTION
+RADKZhangMeritFunction  |ObjectName: myMeritFunction  |FactorC: 10.0
+//RBasicMeritFunction   |ObjectName: myMeritFunction  |ObjectiveMultiplier: 1.0 |ObjectivePower: 1.0 |ConstraintMultiplier: 10.0 |ConstraintPower: 1.0
+//RDummyMeritFunction   |ObjectName: myMeritFunction    
+
+
+// CONVERGENCE CHECK
+RStandardFORMConvergenceCheck    |ObjectName: myConvergenceCheck    |Tolerance1: 0.001 |Tolerance2: 0.001
+
+
+// CHOLESKY DECOMPOSITION, IF NEEDED
+RBasicCholeskyDecomposition      |ObjectName: myCholeskyAlgorithm |OutputLevel: Minimum
+
+
+// PROBABILITY TRANSFORMATION
+RNatafProbabilityTransformation  |ObjectName: myProbTransformation |ProbabilityDistributions: theProbDist |CholeskyDecomposition: myCholeskyAlgorithm |OutputLevel: Minimum
+//RIndependenceProbabilityTransformation  |ObjectName: myProbTransformation |ProbabilityDistributions: theProbDist |OutputLevel: Minimum
+
+
+// RANDOM NUMBER GENERATOR
+RInHouseRandomNumberGenerator    |ObjectName: myGenerator
+
+
+// PROBABILITY DISTRIBUTIONS
+RInHouseProbabilityDistributions |ObjectName: theProbDist
+
+
+// ORCHESTRATING FORM MODEL
+RFORMModel |ObjectName: theFORMModel |OutputLevel: Maximum |InputParameter: theFunctionResponse |Threshold: 1.0 |ProbabilityTransformation: myProbTransformation |SearchDirection: mySearchDirection |LineSearchAlgorithm: myLineSearchAlgorithm  |MeritFunction: myMeritFunction |ConvergenceCheck: myConvergenceCheck  |MaxSteps: 20  |GradientMethod: Finite Difference
+
+
+// ORCHESTRATING SAMPLING MODEL
+RSamplingModel |ObjectName: theSamplingModel |OutputLevel: Medium  |InputParameter: theFunctionResponse |Threshold: 1.0 |ProbabilityTransformation: myProbTransformation |TargetCov: 0.02 |MaxSamples: 100000 |PlotInterval: 100 |RandomNumberGenerator: myGenerator

@@ -1,0 +1,134 @@
+
+
+// EARTHQUAKE OCCURRENCE TIMES
+RTime |ObjectName: CASROccurrenceModel         |Time: 2012-05-28 17:00:00.000
+RTime |ObjectName: JDFNOccurrenceModel         |Time: 2012-03-13 17:00:00.000
+RTime |ObjectName: JDFFOccurrenceModel         |Time: 2012-03-13 17:00:00.000
+RTime |ObjectName: GSPOccurrenceModel          |Time: 2012-03-13 17:00:00.000
+RTime |ObjectName: SubductionM8OccurrenceModel |Time: 2012-03-13 17:00:00.000
+RTime |ObjectName: SubductionM9OccurrenceModel |Time: 2012-03-13 17:00:00.000
+
+
+// CONSTANTS
+RConstant |ObjectName: DummyDepth   |CurrentValue: 0
+RConstant |ObjectName: MinMagnitude |CurrentValue: 5
+RConstant |ObjectName: InterestRate |CurrentValue: 0.03
+
+
+
+// CASR CRUSTAL
+RMapLocation |ObjectName: CASR_Point01 |Latitude: 51.9  |Longitude: -123.6
+RMapLocation |ObjectName: CASR_Point02 |Latitude: 51.2  |Longitude: -122
+RMapLocation |ObjectName: CASR_Point03 |Latitude: 48.7  |Longitude: -120
+RMapLocation |ObjectName: CASR_Point04 |Latitude: 47    |Longitude: -120
+RMapLocation |ObjectName: CASR_Point05 |Latitude: 47    |Longitude: -123.3
+RMapLocation |ObjectName: CASR_Point06 |Latitude: 47.53 |Longitude: -123.22
+RMapLocation |ObjectName: CASR_Point07 |Latitude: 47.87 |Longitude: -123.35
+RMapLocation |ObjectName: CASR_Point08 |Latitude: 48.25 |Longitude: -123.83
+RMapLocation |ObjectName: CASR_Point09 |Latitude: 48.85 |Longitude: -124.75
+RMapLocation |ObjectName: CASR_Point10 |Latitude: 49.74 |Longitude: -126.4
+RMapLocation |ObjectName: CASR_Point11 |Latitude: 49.91 |Longitude: -126.71
+RPolygonalAreaSourceModel |ObjectName: CASRMapLocationModel |BoundaryMapLocationList: CASR_Point01; CASR_Point02; CASR_Point03; CASR_Point04; CASR_Point05; CASR_Point06; CASR_Point07; CASR_Point08; CASR_Point09; CASR_Point10; CASR_Point11;  |Depth: DummyDepth
+RConstant |ObjectName: CASRMmax |CurrentValue: 7.7
+RContinuousRandomVariable |ObjectName: CASRBeta |DistributionType: Lognormal (zeta, sigma) |Mean: 1.0148 |StandardDeviation: 0.377604237
+RBoundedExponentialMagnitudeModel |ObjectName: CASRMagnitudeModel |MinimumMagnitude: MinMagnitude |MaximumMagnitude: CASRMmax |Beta: CASRBeta |Occurrence: CASROccurrenceModel
+
+
+
+
+// JDFN CRUSTAL
+RMapLocation |ObjectName: JDFN_Point01 |Latitude: 49.74 |Longitude: -126.4
+RMapLocation |ObjectName: JDFN_Point02 |Latitude: 48.85 |Longitude: -124.75
+RMapLocation |ObjectName: JDFN_Point03 |Latitude: 48.25 |Longitude: -123.83
+RMapLocation |ObjectName: JDFN_Point04 |Latitude: 47.87 |Longitude: -123.35
+RMapLocation |ObjectName: JDFN_Point05 |Latitude: 47.53 |Longitude: -123.22
+RMapLocation |ObjectName: JDFN_Point06 |Latitude: 47 |Longitude: -123.3
+RMapLocation |ObjectName: JDFN_Point07 |Latitude: 47 |Longitude: -124.03
+RMapLocation |ObjectName: JDFN_Point08 |Latitude: 47.56 |Longitude: -123.9
+RMapLocation |ObjectName: JDFN_Point09 |Latitude: 48.03 |Longitude: -124.23
+RMapLocation |ObjectName: JDFN_Point10 |Latitude: 49.54 |Longitude: -126.71
+RPolygonalAreaSourceModel |ObjectName: JDFNLocationModel |BoundaryMapLocationList: JDFN_Point01; JDFN_Point02; JDFN_Point03; JDFN_Point04; JDFN_Point05; JDFN_Point06; JDFN_Point07; JDFN_Point08; JDFN_Point09; JDFN_Point10  |Depth: DummyDepth
+RContinuousRandomVariable |ObjectName: JDFNMmax |DistributionType: Lognormal (zeta, sigma) |Mean: 7 |StandardDeviation: 0.221359436
+RContinuousRandomVariable |ObjectName: JDFNBeta |DistributionType: Lognormal (zeta, sigma) |Mean: 2.07 |StandardDeviation: 0.658477157
+RBoundedExponentialMagnitudeModel |ObjectName: JDFNMagnitudeModel |MinimumMagnitude: MinMagnitude |MaximumMagnitude: JDFNMmax |Beta: JDFNBeta  |Occurrence: JDFNOccurrenceModel
+
+
+// JDFF CRUSTAL
+RMapLocation |ObjectName: JDFF_Point01 |Latitude: 49.54 |Longitude: -126.71
+RMapLocation |ObjectName: JDFF_Point02 |Latitude: 48.03 |Longitude: -124.23
+RMapLocation |ObjectName: JDFF_Point03 |Latitude: 47.56 |Longitude: -123.9
+RMapLocation |ObjectName: JDFF_Point04 |Latitude: 47 |Longitude: -124.03
+RMapLocation |ObjectName: JDFF_Point05 |Latitude: 47 |Longitude: -124.9
+RMapLocation |ObjectName: JDFF_Point06 |Latitude: 47.38 |Longitude: -124.92
+RMapLocation |ObjectName: JDFF_Point07 |Latitude: 48.32 |Longitude: -125.8
+RMapLocation |ObjectName: JDFF_Point08 |Latitude: 49.24 |Longitude: -127.18
+RPolygonalAreaSourceModel |ObjectName: JDFFLocationModel |BoundaryMapLocationList: JDFF_Point01; JDFF_Point02; JDFF_Point03; JDFF_Point04; JDFF_Point05; JDFF_Point06; JDFF_Point07; JDFF_Point08  |Depth: DummyDepth
+RContinuousRandomVariable |ObjectName: JDFFMmax |DistributionType: Lognormal (zeta, sigma) |Mean: 6.94 |StandardDeviation: 0.188255146
+RContinuousRandomVariable |ObjectName: JDFFBeta |DistributionType: Lognormal (zeta, sigma) |Mean: 1.87 |StandardDeviation: 0.521938393
+RBoundedExponentialMagnitudeModel |ObjectName: JDFFMagnitudeModel |MinimumMagnitude: MinMagnitude |MaximumMagnitude: JDFFMmax |Beta: JDFFBeta |Occurrence: JDFFOccurrenceModel
+
+
+// GSP CRUSTAL
+RMapLocation |ObjectName: GSP_Point01 |Latitude: 49.55 |Longitude: -123.85
+RMapLocation |ObjectName: GSP_Point02 |Latitude: 48.84 |Longitude: -122.4
+RMapLocation |ObjectName: GSP_Point03 |Latitude: 48.3 |Longitude: -121.72
+RMapLocation |ObjectName: GSP_Point04 |Latitude: 47.68 |Longitude: -121.5
+RMapLocation |ObjectName: GSP_Point05 |Latitude: 47 |Longitude: -121.7
+RMapLocation |ObjectName: GSP_Point06 |Latitude: 47 |Longitude: -123.3
+RMapLocation |ObjectName: GSP_Point07 |Latitude: 47.53 |Longitude: -123.22
+RMapLocation |ObjectName: GSP_Point08 |Latitude: 47.87 |Longitude: -123.35
+RMapLocation |ObjectName: GSP_Point09 |Latitude: 48.25 |Longitude: -123.83
+RMapLocation |ObjectName: GSP_Point10 |Latitude: 48.85 |Longitude: -124.75
+RContinuousRandomVariable |ObjectName: GSPDepth |DistributionType: Normal (mean, stdv) |Mean: 50 |CoefficientOfVariation: 0.1
+RPolygonalAreaSourceModel |ObjectName: GSPLocationModel |BoundaryMapLocationList: GSP_Point01; GSP_Point02; GSP_Point03; GSP_Point04; GSP_Point05; GSP_Point06; GSP_Point07; GSP_Point08; GSP_Point09; GSP_Point10;   |Depth: GSPDepth
+RContinuousRandomVariable |ObjectName: GSPMmax |DistributionType: Lognormal (zeta, sigma) |Mean: 7.06 |StandardDeviation: 0.156971335
+RContinuousRandomVariable |ObjectName: GSPBeta |DistributionType: Lognormal (zeta, sigma) |Mean: 1.1284 |StandardDeviation: 0.112632841
+RBoundedExponentialMagnitudeModel |ObjectName: GSPMagnitudeModel |MinimumMagnitude: MinMagnitude |MaximumMagnitude: GSPMmax |Beta: GSPBeta |Occurrence: GSPOccurrenceModel
+
+
+// SUBDUCTION
+RMapLocation |ObjectName: Subduction_Point01 |Latitude: 46 |Longitude: -124
+RMapLocation |ObjectName: Subduction_Point02 |Latitude: 47.5 |Longitude: -123.5
+RMapLocation |ObjectName: Subduction_Point03 |Latitude: 48 |Longitude: -124
+RMapLocation |ObjectName: Subduction_Point04 |Latitude: 48.75 |Longitude: -125.35
+RMapLocation |ObjectName: Subduction_Point05 |Latitude: 49.52 |Longitude: -126.736
+RConstant |ObjectName: SubductionM8Depth |CurrentValue: 25
+RMultipointLineSourceModel |ObjectName: SubductionM8LocationModel |PointMapLocationList: Subduction_Point01; Subduction_Point02; Subduction_Point03; Subduction_Point04; Subduction_Point05; |Depth: SubductionM8Depth
+RMapLocation |ObjectName: SubductionM9LocationModelResponse |Latitude: 48.1869190230411 |Longitude: -124.330902099609 |Altitude: -25
+RUserDefinedMagnitudeModel |ObjectName: SubductionM8MagnitudeModel |XPoints: 8; 8.1; 8.2; 8.3; 8.4; 8.5; 8.6; 8.7; 8.8; |PDFPoints: 1.44895829212854; 1.24196425039589; 1.05625252934035; 1.71853435403853; 1.46814976389925; 1.24545479441217; 1.06072112118186; 0.904859419752479; 1.15916924183037; |Occurrence: SubductionM8OccurrenceModel
+RUserDefinedMagnitudeModel |ObjectName: SubductionM9MagnitudeModel  |XPoints: 8.8; 9; 9.2; |PDFPoints: 1.25000117187464; 3.74999882812538; 1.25000117187464; |Occurrence: SubductionM9OccurrenceModel
+
+
+// TOOL FOR INTENSITY MODELS
+RInHouseLinearSolver |ObjectName: theLinearSolver
+
+
+// CRUSTAL INTENSITY
+RBooreAtkinson2008IntensityModel |ObjectName: CrustalIntensityModel |MagnitudeList: CASRMagnitudeModelResponse; JDFFMagnitudeModelResponse; JDFNMagnitudeModelResponse;  |HypocentreList: CASRMapLocationModelResponse; JDFFLocationModelResponse; JDFNLocationModelResponse; |FaultType: Unspecified |ResponseType: Sa |Period: 1.0 |MapLocation: TilburyPortMapLocation |LinearSolver: theLinearSolver
+
+
+// SUBCRUSTAL INTENSITY
+RAtkinsonBoore2003IntensityModel |ObjectName: SubcrustalIntensityModel |MagnitudeList: GSPMagnitudeModelResponse;  |HypocentreList: GSPLocationModelResponse;  |EventType: InSlab |ResponseType: Sa |Period: 1.0 |MapLocation: TilburyPortMapLocation |LinearSolver: theLinearSolver
+
+
+// SUBDUCTION INTENSITY
+RAtkinsonBoore2003IntensityModel |ObjectName: SubductionIntensityModel |MagnitudeList: SubductionM8MagnitudeModelResponse; SubductionM9MagnitudeModelResponse;  |HypocentreList: SubductionM8LocationModelResponse; SubductionM9LocationModelResponse;  |EventType: Interface |ResponseType: Sa  |Period: 1.0 |MapLocation: TilburyPortMapLocation |LinearSolver: theLinearSolver
+
+
+// LOCATIONS
+RMapLocation |ObjectName: TilburyPortMapLocation      |Latitude: 49.143018 |Longitude: -123.033918 |Altitude: 0.00 |ShearWaveVelocity: 400.0
+RMapLocation |ObjectName: PowellRiverPortMapLocation  |Latitude: 49.866667 |Longitude: -124.549722 |Altitude: 0.00 |ShearWaveVelocity: 400.0
+
+
+// BRIDGE
+RBridgeModel |ObjectName: OakStreetBridge |MapLocation: TilburyPortMapLocation |AnalysisType: GroundShaking |BridgeType: HWB16 |NumberOfSpans: 3|AngleOfSkew: 0 |BridgeLength: 213.2 |SpanWidth: 10 |SaIntensityList: CrustalIntensityModelResponse; SubcrustalIntensityModelResponse; SubductionIntensityModelResponse |PGDIntensityList: CrustalIntensityModelResponse; SubcrustalIntensityModelResponse; SubductionIntensityModelResponse
+
+
+
+// BUILDING
+RSimpleBIM |ObjectName: PowellRiverHouseBIM |MapLocation: PowellRiverPortMapLocation |YearOfConstruction: 1973 |LoadBearingSystem: MomentFrame |Material: ReinforcedConcrete |NumberOfStoreys: 3 |FootprintArea: 691 |OccupancyType: Services |PlanIrregularity: true |VerticalIrregularity: false |SoftStorey: false |Opening: false |ShortColumn: false |Pounding: false |Retrofitted: false |SCost: 266 |NSDCost: 833 |NSACost: 844 |CCost: 0
+
+RSimpleBuildingModel |ObjectName: PowellRiverHouseResponseModel |BIM: PowellRiverHouseBIM  |IntensityList: CrustalIntensityModelResponse; SubcrustalIntensityModelResponse; SubductionIntensityModelResponse |AnnualInterestRate: InterestRate 
+
+
+

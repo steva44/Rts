@@ -1,0 +1,33 @@
+
+
+
+// POINTS
+RPoint |ObjectName: point1  |XCoordinate: 0      |YCoordinate: 2      |ZCoordinate: 3   |XDisplacementRestraint: Fixed |YDisplacementRestraint: Fixed |ZDisplacementRestraint: Fixed |XRotationRestraint: Fixed |YRotationRestraint: Fixed |ZRotationRestraint: Fixed
+
+RPoint |ObjectName: point2  |XCoordinate: 2      |YCoordinate: 2      |ZCoordinate: 3   |XDisplacementRestraint: Fixed |YDisplacementRestraint: Fixed |ZDisplacementRestraint: Fixed |XRotationRestraint: Fixed |ZRotationRestraint: Fixed
+
+RPoint |ObjectName: point3  |XCoordinate: 4      |YCoordinate: 2      |ZCoordinate: 3   |XDisplacementRestraint: Fixed |YDisplacementRestraint: Fixed |XRotationRestraint: Fixed |ZRotationRestraint: Fixed  |ZForce: -5000
+
+
+
+
+
+// COMPONENTS
+RSteelIBeamComponent |ObjectName: beam1 |Point1: point1 |Point2: point2  |MeshOption: 1 |WebHeight: 0.1 |FlangeWidth: 0.1 |WebThickness: 0.01 |FlangeThickness: 0.01 |Orientation: 0
+RSteelIBeamComponent |ObjectName: beam2 |Point1: point2 |Point2: point3  |MeshOption: 1 |WebHeight: 0.1 |FlangeWidth: 0.1 |WebThickness: 0.01 |FlangeThickness: 0.01 |Orientation: 0
+
+
+
+// TOOLS
+RInHouseLinearSolver |ObjectName: myLinearSolver |OutputLevel: Minimum
+RInHouseProbabilityDistributions |ObjectName: myProbabilityDistributions |OutputLevel: Minimum
+RConnectivityTableAssembler |ObjectName: myAssembler |OutputLevel: Minimum 
+RLinearStaticStructuralAnalysis |ObjectName: myStaticAnalysis |OutputLevel: Medium |Assembler: myAssembler |LinearSolver: myLinearSolver
+
+
+// MODELS
+RComponentResponseModel |ObjectName: myStaticBuilding |OutputLevel: Maximum |StructuralAnalysis: myStaticAnalysis
+
+
+
+

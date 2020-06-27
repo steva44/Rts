@@ -1,0 +1,71 @@
+
+RInHouseLinearSolver                   |ObjectName: myLinearSolver |OutputLevel: Minimum  
+RGSLProbabilityDistributions           |ObjectName: theProbabilityDistributions |OutputLevel: Minimum  
+RIndependenceProbabilityTransformation |ObjectName: myProbabilityTransformations |OutputLevel: Minimum |ProbabilityDistributions: theProbabilityDistributions
+RInHouseRandomNumberGenerator          |ObjectName: myInHouseRandomNumberGenerator |OutputLevel: Minimum |Seed: 0
+RConnectivityTableAssembler            |ObjectName: myAssembler |OutputLevel: Minimum 
+RLinearStaticStructuralAnalysis        |ObjectName: myStaticAnalysis |OutputLevel: Minimum |Assembler: myAssembler |LinearSolver: myLinearSolver
+RGradientNormConvergenceCheck          |ObjectName: myOptimizationConvergenceCheck |OutputLevel: Maximum |Tolerance: 10
+RFixedStepSize                         |ObjectName: myOptimizationFixedStepSize |OutputLevel: Minimum |StepSize: 0.000005
+RSteepestDescentSearchDirection        |ObjectName: myOptimizationSearchDirection |OutputLevel: Minimum
+
+RContinuousRandomVariable |ObjectName: pointLoad |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Normal (mean, stdv) |Mean: -17000  |StandardDeviation: 500  
+RContinuousRandomVariable |ObjectName: thetaCLT |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Normal (mean, stdv) |Mean: 200 |CoefficientOfVariation: 0.2
+RContinuousRandomVariable |ObjectName: thetaDeflection |ProbabilityDistributions: theProbabilityDistributions |DistributionType: Normal (mean, stdv) |Mean: -1000 |CoefficientOfVariation: 0.2  
+
+RContinuousDecisionVariable |ObjectName: beamThickness |CurrentValue: 0.15 |UpperBound: 0 |LowerBound: 0 |IncrementalCost: 1
+
+RConstant |ObjectName: beamLength |CurrentValue: 9
+RConstant |ObjectName: beamWidth  |CurrentValue: 3
+
+RPoint |ObjectName: pointA  |XCoordinate: 0   |YCoordinate: -1     |ZCoordinate: 2 
+RPoint |ObjectName: pointB  |XCoordinate: 0   |YCoordinate: 5     |ZCoordinate: 2 
+RPoint |ObjectName: pointC  |XCoordinate: 0   |YCoordinate: 5     |ZCoordinate: 4 
+RPoint |ObjectName: pointD  |XCoordinate: 0   |YCoordinate: -1     |ZCoordinate: 4 
+
+RPoint |ObjectName: horzPoint1   |XCoordinate: 0	   |YCoordinate: 0   			|ZCoordinate: 3 
+RPoint |ObjectName: horzPoint2   |XCoordinate: beamLength  |YCoordinate: 0    			|ZCoordinate: 3   
+RPoint |ObjectName: horzPoint3   |XCoordinate: beamLength  |YCoordinate: beamWidth		|ZCoordinate: 3  |ZForce: pointLoad
+RPoint |ObjectName: horzPoint4   |XCoordinate: 0	   |YCoordinate: beamWidth		|ZCoordinate: 3 
+
+RPlateComponent  |ObjectName: cantileverBeam |Point1: horzPoint1 |Point2: horzPoint2 |Point3: horzPoint3 |Point4: horzPoint4  |MeshOption: 106 |Thickness: beamThickness
+
+RFixedPLaneComponent |ObjectName: ground |Point1: pointA |Point2: pointB  |Point3: pointC |Point4: pointD
+
+RComponentResponseModel |ObjectName: myStaticBuilding |OutputLevel: Minimum  |StructuralAnalysis: myStaticAnalysis |Responses: horzPoint3.ZDisplacement 
+
+RStevesCostModel |ObjectName: myTotalCost |OutputLevel: Maximum |Width: beamWidth |Thickness: beamThickness |Length: beamLength |Displacement: |ThetaCLT: thetaCLT |ThetaDeflection: thetaDeflection |Displacement: myStaticBuildinghorzPoint3ZDisplacement
+
+RInHouseRandomNumberGenerator          |ObjectName: myGenerator
+RGSLProbabilityDistributions           |ObjectName: myProbDist             |OutputLevel: Minimum 
+RIndependenceProbabilityTransformation |ObjectName: myProbTransformation   |OutputLevel: Minimum |ProbabilityDistributions: myProbDist 
+RStandardFORMConvergenceCheck          |ObjectName: myConvergenceCheck     |OutputLevel: Minimum |Tolerance1: 0.001     |Tolerance2: 0.001
+RADKZhangMeritFunction                 |ObjectName: myMeritFunction        |OutputLevel: Minimum |Multiplier: 2 |Adder: 10 |Factor: 0.5
+RFixedStepSize                         |ObjectName: myFORMStepSize         |OutputLevel: Minimum |StepSize: 1
+RHLRFSearchDirection                   |ObjectName: myFORMSearchDirection  |OutputLevel: Minimum 
+RGradientNormConvergenceCheck          |ObjectName: theConvergenceCheck    |OutputLevel: Minimum |Tolerance: 0.05
+//RSlowStartStepSize                     |ObjectName: myOptiStepSize         |OutputLevel: Minimum |StartStepSize: 0.01 |FinalStepSize: 1.0 |RampUpSteps: 5
+//RBFGSSearchDirection                   |ObjectName: myOptiSearchDirection  |OutputLevel: Minimum 
+RSteepestDescentSearchDirection        |ObjectName: myOptiSearchDirection   |OutputLevel: Minimum 
+RFixedStepSize                         |ObjectName: myOptiStepSize         |OutputLevel: Minimum |StepSize: 0.00001 
+
+RFOSMModel                   |ObjectName: myFOSMModel         |OutputLevel: Maximum |InputParameter: myTotalCostResponse |Threshold: 21000.0  |GradientMethod: Direct Differentiation
+
+RFORMModel                   |ObjectName: myFORMModel         |OutputLevel: Medium |InputParameter: myTotalCostResponse |Threshold: 1300.0 |ProbabilityTransformation: myProbTransformation |SearchDirection: myFORMSearchDirection |StepSize: myFORMStepSize |ConvergenceCheck: myConvergenceCheck |MaxSteps: 20  |GradientMethod: Direct Differentiation
+
+RRiskModel                   |ObjectName: myRiskModel         |OutputLevel: Medium    |Input: myFORMModelResponse |CostIncrement: 300.0 |ProbabilityTolerance: 0.005
+
+ROptimizationModel           |ObjectName: myOptimizationModel |OutputLevel: Maximum |Objective: myRiskModelResponse |SearchDirection: myOptiSearchDirection |StepSize: myOptiStepSize |ConvergenceCheck: theConvergenceCheck |MaxSteps: 20 |GradientMethod: Direct Differentiation
+
+
+
+
+
+
+
+
+
+
+
+
+
